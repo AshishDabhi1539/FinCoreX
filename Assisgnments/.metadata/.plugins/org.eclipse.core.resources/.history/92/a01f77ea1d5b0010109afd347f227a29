@@ -1,0 +1,46 @@
+package com.tss.model;
+
+public class InvoiceCalculator {
+	private int id;
+    private String description;
+    private double cost;
+    private double discountPercent;
+    static final double TAX = 0.10;
+
+    public InvoiceCalculator(int id, String description, double cost, double discountPercent) {
+        this.id = id;
+        this.description = description;
+        this.cost = cost;
+        this.discountPercent = discountPercent;
+    }
+
+    public double calculateTax() {
+        return cost * TAX;
+    }
+
+    public double calculateDiscount() {
+        return cost * (discountPercent / 100);
+    }
+
+    public double calculateFinalCost() {
+        return cost + calculateTax() - calculateDiscount();
+    }
+
+    
+    public int getId() { 
+    	return id; 
+    }
+    
+    public String getDescription() { 
+    	return description; 
+    }
+    
+    public double getCost() { 
+    	return cost; 
+    }
+    public double getDiscountPercent() { 
+    	return discountPercent; 
+    }
+
+
+}

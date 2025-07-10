@@ -1,0 +1,7 @@
+package com.tss.model;
+
+public interface IWorker2 {
+
+	public void start();
+	public void stop();
+}

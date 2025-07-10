@@ -1,0 +1,32 @@
+package com.tss.test;
+
+import java.util.Scanner;
+import java.util.function.Consumer;
+
+public class FactorialTest {
+
+    public static void main(String[] args) {
+    	
+    	Scanner scanner = new Scanner(System.in);
+    	
+    	System.out.println("Enter the number: ");
+    	int number = scanner.nextInt();
+        
+
+        Consumer <Integer> factorial = (nnumber) -> {
+        	factorial.accept(number);
+           calculateFactorial((int) (nnumber));
+            
+        };
+
+        
+    }
+
+    private static void calculateFactorial(int number) {
+        int result = 1;
+        for (int i = 1; i <= number; i++) {
+            result = result * i;
+        }
+        System.out.println("Factorial of the number "+ result);
+    }
+}

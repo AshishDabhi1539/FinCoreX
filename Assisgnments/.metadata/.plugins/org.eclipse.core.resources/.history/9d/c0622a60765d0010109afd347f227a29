@@ -1,0 +1,11 @@
+package com.tss.creational.factory.model;
+
+public class LicenseNumberGenerator implements ILicenseVehicle{
+
+	@Override
+	public void generateLicensePlat() {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

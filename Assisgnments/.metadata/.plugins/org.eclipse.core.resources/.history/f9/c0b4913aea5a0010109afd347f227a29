@@ -1,0 +1,86 @@
+package com.tss.test;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+import com.tss.model.Song;
+import com.tss.model.SongList;
+
+public class SongTest {
+
+	public static void main(String[] args) {
+		SongList playlist = new SongList();
+		Scanner scanner = new Scanner(System.in);
+
+		while (true) {
+			System.out.println("\n Playlist Menu ");
+			System.out.println("1. Add Song");
+			System.out.println("2. Remove Song");
+			System.out.println("3. Search by Title");
+			System.out.println("4. Display All Songs");
+			System.out.println("5. Shuffle Playlist");
+			System.out.println("6. Exit");
+			System.out.print("Choose an option: ");
+			int choice = scanner.nextInt();
+			
+			scanner.nextLine();
+			switch (choice) {
+			case 1 : 
+				System.out.print("Title: ");
+				String title = scanner.nextLine();
+				System.out.print("Artist: ");
+				String artist = scanner.nextLine();
+				System.out.print("Duration (in seconds): ");
+				int duration = Integer.parseInt(scanner.nextLine());
+				boolean added = playlist.addSong(new Song(title, artist, duration));
+				if (added) {
+					System.out.println("Song added successfully.");
+				} else {
+					System.out.println("Song already exists in the playlist.");
+				}
+				break;
+				
+			case 2 : 
+				System.out.print("Title: ");
+				title = scanner.nextLine();
+				System.out.print("Artist: ");
+				artist = scanner.nextLine();
+				boolean removed = playlist.removeSong(title, artist);
+				if (!removed) 
+					System.out.println("Song not found.");
+				System.out.println("Song removed successfully.");
+				break;
+			
+			case 3 : 
+				System.out.print("Enter title to search: ");
+				title = scanner.nextLine();
+				ArrayList<Song> found = playlist.searchByTitle(title);
+				if (found.isEmpty()) {
+					System.out.println("No song found with that title.");
+				} else {
+					System.out.println("Found songs:");
+					for (Song s : found) {
+						System.out.println(s);
+					}
+				}
+				break;
+			
+			case 4 : playlist.displayAllSongs();
+					 break;
+					 
+			case 5 : 
+				playlist.shuffle();
+				System.out.println("Playlist shuffled.");
+				break;
+				
+			case 6 : 
+				System.out.println("Goodbye!");
+				scanner.close();
+				return;
+			
+			default : System.out.println("Invalid option. Try again.");
+			}
+		}
+	}
+
+}

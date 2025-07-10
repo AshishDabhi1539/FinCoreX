@@ -1,0 +1,5 @@
+package com.tss.creational.singleton.model;
+
+public class DatabaseConnection {
+
+}

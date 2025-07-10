@@ -1,0 +1,33 @@
+package com.tss.creational.abstractfactory.test;
+
+import com.tss.creational.abstractfactory.model.ICarFactory;
+import com.tss.creational.abstractfactory.model.ICars;
+import com.tss.creational.abstractfactory.model.MahindraFactory;
+import com.tss.creational.abstractfactory.model.MarutiFactory;
+import com.tss.creational.abstractfactory.model.TataFactory;
+
+public class CarTest {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		ICarFactory marutiFactory = new MarutiFactory();
+        ICars maruti = marutiFactory.makeCar();
+        maruti.start();
+        maruti.stop();
+
+        // Use TataFactory to get Tata car
+        ICarFactory tataFactory = new TataFactory();
+        ICars tata = tataFactory.makeCar();
+        tata.start();
+        tata.stop();
+
+        // Use MahindraFactory to get Mahindra car
+        ICarFactory mahindraFactory = new MahindraFactory();
+        ICars mahindra = mahindraFactory.makeCar();
+        mahindra.start();
+        mahindra.stop();
+
+	}
+
+}

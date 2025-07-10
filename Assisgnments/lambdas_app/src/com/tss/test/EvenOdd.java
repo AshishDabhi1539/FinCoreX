@@ -1,0 +1,18 @@
+package com.tss.test;
+
+import java.util.function.Predicate;
+
+public class EvenOdd {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		Predicate <Integer> isEven = (number) -> number % 2 == 0;
+		
+		System.out.println("10 is even " +isEven.test(10));
+		System.out.println("1 is even " +isEven.test(1));
+		
+		
+	}
+
+}

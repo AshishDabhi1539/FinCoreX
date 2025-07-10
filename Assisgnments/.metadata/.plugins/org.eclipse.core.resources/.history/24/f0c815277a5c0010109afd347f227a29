@@ -1,0 +1,12 @@
+package com.tss.test;
+
+import com.tss.model.TaxCalculator;
+
+public class DbLoggerTest {
+
+	 public static void main(String[] args) {
+	        TaxCalculator taxCalculator = new TaxCalculator(null);
+	        int tax = taxCalculator.calculateTax(1000, 0);  
+	        System.out.println("Tax: " + tax);
+	    }
+}

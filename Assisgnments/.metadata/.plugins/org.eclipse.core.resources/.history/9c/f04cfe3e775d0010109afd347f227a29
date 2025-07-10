@@ -1,0 +1,14 @@
+package com.tss.creational.factory.model;
+
+import java.util.Random;
+
+public class TwoWheeler implements ILicenseVehicle{
+
+	@Override
+	public String generateLicensePlat() {
+		// TODO Auto-generated method stub
+		 int number = new Random().nextInt(9000) + 1000; 
+	        return "TW" + number;
+	}
+
+}

@@ -1,0 +1,34 @@
+package com.tss.test;
+
+import java.util.function.Function;
+import java.util.function.Supplier;
+
+import com.tss.model.Bill;
+
+public class BiIlTest {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		Supplier<Double> shippingSupplier = () -> 40.0;
+		
+		Function<Bill, String> bill = item -> {
+			double price = item.getPrice();
+            double tax = price * 0.18;
+            double shipping = shippingSupplier.get();
+            double finalAmount = price + tax + shipping;
+            
+            return "Bill\n"
+            + "Item Name: " + item.getName() + "\n"
+            + "Base Price: ₹" + String.format("%.2f", price) + "\n"
+            + "Tax (18%): ₹" + String.format("%.2f", tax) + "\n"
+            + "Shipping: ₹" + String.format("%.2f", shipping) + "\n"
+            + "Total: ₹" + String.format("%.2f", finalAmount);
+		};
+		
+		Bill bill1 = new Bill("Laptop", 120000);
+		String billl = bill.apply(bill1);
+		System.out.println(billl);
+	}
+
+}

@@ -1,0 +1,52 @@
+package com.tss.test;
+
+import java.util.Scanner;
+
+import com.tss.model.MovieManager;
+import com.tss.model.MovieStoreEmptyException;
+import com.tss.model.MovieStoreFullException;
+
+public class MovieTest {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        MovieManager manager = new MovieManager();
+
+        while (true) {
+            System.out.println("\n1. Display movies\n2. Add movies\n3. Delete Movie\n4. Clear all\n5. Exit");
+            int choice = sc.nextInt();
+            sc.nextLine(); // clear newline
+
+            try {
+                switch (choice) {
+                    case 1:
+                        manager.displayMovies();
+                        break;
+                    case 2:
+                        System.out.print("Enter name: ");
+                        String name = sc.nextLine();
+                        System.out.print("Enter genre: ");
+                        String genre = sc.nextLine();
+                        System.out.print("Enter year: ");
+                        int year = sc.nextInt();
+                        manager.addMovie(name, genre, year);
+                        break;
+                    case 3:
+                        System.out.print("Enter movie ID to delete: ");
+                        String id = sc.nextLine();
+                        manager.deleteMovie(id);
+                        break;
+                    case 4:
+                        manager.clearMovies();
+                        break;
+                    case 5:
+                        System.out.println("Exiting...");
+                        return;
+                    default:
+                        System.out.println("Invalid choice.");
+                }
+            } catch (MovieStoreFullException | MovieStoreEmptyException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+}

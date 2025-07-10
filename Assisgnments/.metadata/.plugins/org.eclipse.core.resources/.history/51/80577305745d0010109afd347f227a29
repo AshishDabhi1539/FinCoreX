@@ -1,0 +1,19 @@
+package com.tss.creational.factory.test;
+
+import com.tss.creational.factory.model.CarFactory;
+import com.tss.creational.factory.model.CarType;
+import com.tss.creational.factory.model.ICars;
+
+public class CarFactoryTest {
+
+	public static void main(String[] args) {
+
+		CarFactory factory = new CarFactory();
+
+		ICars car = factory.makeCars(CarType.Mahindra);
+
+		car.start();
+		car.stop();
+	}
+
+}

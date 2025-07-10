@@ -1,0 +1,10 @@
+package com.tss.test;
+
+public class SongTest {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

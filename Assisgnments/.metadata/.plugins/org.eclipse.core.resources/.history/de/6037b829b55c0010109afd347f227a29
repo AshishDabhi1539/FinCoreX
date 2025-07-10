@@ -1,0 +1,39 @@
+package com.tss.test;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+
+import com.tss.model.Student;
+
+public class StudentTest {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		 List<Student> students = Arrays.asList(
+		            new Student("Mahek", 1, 80),
+		            new Student("Harshad", 2, 70),
+		            new Student("Dharmi", 3, 90),
+		            new Student("Nikul", 4, 60),
+		            new Student("Harshil", 5, 88),
+		            new Student("Henshi", 6, 72),
+		            new Student("Harsh", 7, 95),
+		            new Student("Pruthvi", 8, 76),
+		            new Student("Ashish", 9, 85),
+		            new Student("Deep", 10, 67)
+		        );
+		 
+		 Predicate<Student> highScorer = student -> student.getMarks() > 75;
+		 
+		 Consumer<Student> congratulate = student -> 
+         
+		 for (Student student : students) {
+		        if (highScorer.test(student)) {
+		            congratulate.accept(student);
+		        }
+	}
+	
+
+}

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+    <fullyQualifiedTypeName name="java.util.Random"/>
+    <fullyQualifiedTypeName name="com.tss.model.Box"/>
+    <fullyQualifiedTypeName name="com.tss.model.Book"/>
+    <fullyQualifiedTypeName name="java.time.Period"/>
+    <fullyQualifiedTypeName name="com.tss.model.AccountType"/>
+    <fullyQualifiedTypeName name="com.tss.model.Number"/>
+    <fullyQualifiedTypeName name="com.tss.model.inheritance.model.Circle"/>
+    <fullyQualifiedTypeName name="com.tss.model.inheritance.model.Rectangle"/>
+    <fullyQualifiedTypeName name="com.tss.model.inheritance.model.Shape"/>
+    <fullyQualifiedTypeName name="java.lang.reflect.Method"/>
+    <fullyQualifiedTypeName name="java.lang.reflect.Parameter"/>
+    <fullyQualifiedTypeName name="com.tss.ExceptionClass.OverfillException"/>
+    <fullyQualifiedTypeName name="javax.naming.InsufficientResourcesException"/>
+    <fullyQualifiedTypeName name="com.tss.ExceptionClass.InsufficientWaterException"/>
+    <fullyQualifiedTypeName name="com.sun.tools.javac.util.List"/>
+    <fullyQualifiedTypeName name="com.tss.model.Customer"/>
+    <fullyQualifiedTypeName name="com.tss.model.Robot"/>
+    <fullyQualifiedTypeName name="java.util.function.Supplier"/>
+    <fullyQualifiedTypeName name="jdk.internal.org.jline.terminal.TerminalBuilder.SystemOutput"/>
+    <fullyQualifiedTypeName name="java.util.List"/>
+    <fullyQualifiedTypeName name="java.util.function.Predicate"/>
+    <fullyQualifiedTypeName name="java.util.function.Function"/>
+    <fullyQualifiedTypeName name="java.util.function.Consumer"/>
+    <fullyQualifiedTypeName name="com.tss.creational.factory.model.CarType"/>
+    <fullyQualifiedTypeName name="com.tss.creational.factory.model.Mahindra"/>
+    <fullyQualifiedTypeName name="java.util.Scanner"/>
+</qualifiedTypeNameHistroy>

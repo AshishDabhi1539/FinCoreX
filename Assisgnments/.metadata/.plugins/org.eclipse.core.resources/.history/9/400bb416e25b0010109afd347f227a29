@@ -1,0 +1,40 @@
+package com.tss.model;
+
+public class Labour2 implements IWorker2{
+
+	@Override
+	public void start() {
+		// TODO Auto-generated method stub
+		System.out.println("Please start working!");
+	}
+
+	@Override
+	public void rest() {
+		// TODO Auto-generated method stub
+		System.out.println("Please stop working!");
+		
+	}
+
+	@Override
+	public void eat() {
+		// TODO Auto-generated method stub
+		System.out.println("Please eat food!");
+	}
+
+	@Override
+	public void drink() {
+		// TODO Auto-generated method stub
+		System.out.println("Please drink water!");
+	}
+
+	@Override
+	public void rest() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+		
+	
+
+}

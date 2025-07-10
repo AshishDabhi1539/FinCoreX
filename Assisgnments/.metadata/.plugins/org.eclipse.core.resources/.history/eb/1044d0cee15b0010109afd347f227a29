@@ -1,0 +1,17 @@
+package com.tss.model;
+
+public class Labour2 implements IWorker2{
+
+	@Override
+	public void start() {
+		// TODO Auto-generated method stub
+		System.out.println("Please start");
+	}
+
+	@Override
+	public void stop() {
+		// TODO Auto-generated method stub
+		System.out.println("Please stop");
+	}
+
+}

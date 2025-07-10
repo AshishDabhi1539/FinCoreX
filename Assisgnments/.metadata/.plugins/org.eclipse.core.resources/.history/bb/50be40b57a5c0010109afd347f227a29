@@ -1,0 +1,14 @@
+package com.tss.test;
+
+import com.tss.model.DBLogger;
+import com.tss.model.TaxCalculator;
+
+public class DbLoggerTest {
+
+	 public static void main(String[] args) {
+		 DBLogger dbLogger = new DBLogger();
+	        TaxCalculator taxCalculator = new TaxCalculator(dbLogger);
+	        int tax = taxCalculator.calculateTax(1000, 0);  
+	        System.out.println("Tax: " + tax);
+	    }
+}

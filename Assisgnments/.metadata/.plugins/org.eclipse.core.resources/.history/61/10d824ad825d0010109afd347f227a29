@@ -1,0 +1,53 @@
+package com.tss.test;
+
+import java.util.Scanner;
+
+import com.tss.model.ChairFactory;
+import com.tss.model.IFurniture;
+import com.tss.model.IFurnitureFactory;
+import com.tss.model.IStyle;
+import com.tss.model.ModernStyle;
+import com.tss.model.SofaFactory;
+import com.tss.model.TableFactory;
+import com.tss.model.VictorianStyle;
+
+public class FurnitureTest {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		Scanner scanner = new Scanner(System.in);
+		System.out.print("Enter furniture style (Modern/Victorian): ");
+		String input = scanner.nextLine().toLowerCase();
+
+		IStyle style = null;
+
+		if (input.equals("modern")) {
+			style = new ModernStyle();
+		} else if (input.equals("victorian")) {
+			style = new VictorianStyle();
+		} else {
+			System.out.println("Invalid style.");
+			scanner.close();
+			return;
+		}
+
+		// Create factories
+		IFurnitureFactory chairFactory = new ChairFactory();
+		IFurnitureFactory sofaFactory = new SofaFactory();
+		IFurnitureFactory tableFactory = new TableFactory();
+
+		// Create furniture
+		IFurniture chair = chairFactory.create(style);
+		IFurniture sofa = sofaFactory.create(style);
+		IFurniture table = tableFactory.create(style);
+
+		// Output
+		System.out.println("\nFurniture Set");
+		chair.describe();
+		sofa.describe();
+		table.describe();
+
+	}
+
+}

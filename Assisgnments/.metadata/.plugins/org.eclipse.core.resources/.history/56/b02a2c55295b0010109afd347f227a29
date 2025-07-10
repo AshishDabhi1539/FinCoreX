@@ -1,0 +1,14 @@
+package com.tss.model;
+
+public class SimpleInterest extends FixedDeposit2{
+
+	public SimpleInterest(static double principal, int duration,
+			FestivalInterest interestStrategy) {
+		super(duration, principal, interestStrategy);
+		// TODO Auto-generated constructor stub
+	}
+	public double calculateSimpleInterest() {
+        return (principal * duration * interestStrategy.getRate()) / 100;
+    }
+
+}

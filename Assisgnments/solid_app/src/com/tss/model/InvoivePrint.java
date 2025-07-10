@@ -1,0 +1,6 @@
+package com.tss.model;
+
+public class InvoivePrint {
+
+	
+}

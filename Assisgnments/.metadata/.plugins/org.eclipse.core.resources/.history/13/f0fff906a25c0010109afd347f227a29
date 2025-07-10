@@ -1,0 +1,13 @@
+package com.tss.model;
+
+public class ShoppingCart {
+    private CreditCard payment; // tightly coupled
+
+    public ShoppingCart() {
+        this.payment = new CreditCard(); // hardcoded dependency
+    }
+
+    public void checkout(int amount) {
+        payment.pay(amount); // directly calling the low-level class
+    }
+}

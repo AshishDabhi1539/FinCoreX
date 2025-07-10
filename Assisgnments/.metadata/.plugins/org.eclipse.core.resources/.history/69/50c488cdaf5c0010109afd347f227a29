@@ -1,0 +1,16 @@
+package com.tss.test;
+
+import com.tss.model.IAddition;
+
+public class AdditionTest {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		IAddition add = (number1, number2) -> number1 + number2;
+		
+		int sum = add.addition(10, 20);
+		System.out.println("Sum is: "+sum);
+	}
+
+}

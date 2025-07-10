@@ -1,0 +1,35 @@
+package com.tss.test;
+
+import java.util.Scanner;
+
+import com.tss.model.IPatternPrint;
+
+public class PatternPrintTest {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("Enter the number: ");
+		int number = scanner.nextInt();
+
+		IPatternPrint patternPrint = (nnumber) -> {
+			patternPrint(number);
+		};
+		patternPrint.pattern(number);
+	}
+
+	private static void patternPrint(int number) {
+		// TODO Auto-generated method stub
+		int num = 1;
+		for (int i = 1; i <= number; i++) {
+			for (int j = 1; j <= i; j++) {
+				System.out.print(num + " ");
+				num++;
+			}
+			System.out.println();
+		}
+
+	}
+
+}

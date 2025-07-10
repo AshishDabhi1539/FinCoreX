@@ -1,0 +1,104 @@
+package com.tss.test;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+
+import com.tss.model.CartSerializer;
+import com.tss.model.Customer;
+import com.tss.model.LineItem;
+import com.tss.model.Order;
+import com.tss.model.Product;
+
+public class ProductTest {
+	    public static void main(String[] args) {
+	        Scanner sc = new Scanner(System.in);
+	        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+
+	        System.out.println("Welcome to the Shopping Application!");
+
+	        System.out.print("Enter Customer ID: ");
+	        int custId = sc.nextInt();
+	        sc.nextLine();
+
+	        System.out.print("Enter Customer Name: ");
+	        String name = sc.nextLine();
+
+	        Customer customer = new Customer(custId, name);
+
+	        System.out.print("Enter Order ID: ");
+	        int orderId = sc.nextInt();
+	        Order order = new Order(orderId);
+
+	        // Predefined Products
+	        List<Product> products = Arrays.asList(
+	                new Product(1, "Milk", 100, 10),
+	                new Product(2, "Laptop", 200, 20),
+	                new Product(3, "Book", 300, 15)
+	        );
+
+	        boolean adding = true;
+	        int lineItemId = 1;
+
+	        while (adding) {
+	            System.out.println("\nAvailable Products:");
+	            for (Product p : products) {
+	                System.out.println("ID: " + p.getId() + ", Name: " + p.getName()
+	                        + ", Price: " + p.getPrice() + ", Discount: " + p.getDiscountPercent() + "%");
+	            }
+
+	            System.out.print("Enter Product ID to add to order: ");
+	            int prodId = sc.nextInt();
+	            Product selected = products.stream()
+	                    .filter(p -> p.getId() == prodId)
+	                    .findFirst()
+	                    .orElse(null);
+
+	            if (selected == null) {
+	                System.out.println("Invalid product ID.");
+	                continue;
+	            }
+
+	            System.out.print("Enter Quantity: ");
+	            int qty = sc.nextInt();
+
+	            order.addLineItem(new LineItem(lineItemId++, qty, selected));
+
+	            System.out.print("Do you want to add another item? (y/n): ");
+	            String more = sc.next().toLowerCase();
+	            adding = more.equals("y");
+	        }
+
+	        customer.addOrder(order);
+	        CartSerializer.saveCart(customer);
+
+	        // Print Bill
+	        System.out.println("\n*********** BILL ***************");
+	        System.out.println("Customer ID: " + customer.getId());
+	        System.out.println("Customer Name: " + customer.getName());
+	        System.out.println("Order ID: " + order.getId());
+	        System.out.println("Order Date: " + sdf.format(order.getDate()));
+
+	        System.out.println("\n-------------------------------------------------------------");
+	        System.out.printf("%-10s%-12s%-10s%-10s%-12s%-12s%-12s%n",
+	                "LineItem", "Product ID", "Item", "Qty", "Unit Price", "Discount %", "Discounted Price", "Total Cost");
+	        System.out.println("-------------------------------------------------------------");
+
+	        for (LineItem item : order.getItems()) {
+	            Product p = item.getProduct();
+	            double discPrice = p.calculateDiscountedPrice();
+	            double total = item.calculateLineItemCost();
+
+	            System.out.printf("%-10d%-12d%-10s%-10d%-12.2f%-12.2f%-12.2f%-12.2f%n",
+	                    item.getId(), p.getId(), p.getName(), item.getQuantity(),
+	                    p.getPrice(), p.getDiscountPercent(), discPrice, total);
+	        }
+
+	        System.out.println("-------------------------------------------------------------");
+	        System.out.printf("Total Order Price: %.2f%n", order.calculateOrderPrice());
+
+	        System.out.println("\n********** Thank you for shopping with us! **********");
+	    }
+	
+
+}

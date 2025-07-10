@@ -1,0 +1,32 @@
+package com.tss.basics;
+
+import java.util.Scanner;
+public class Distance {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Scanner scanner = new Scanner(System.in);
+		
+		System.out.println("Enter the first number: ");
+		int x1 = scanner.nextInt();
+		
+		System.out.println("Enter the second number: ");
+		int x2 = scanner.nextInt();
+		
+		System.out.println("Enter the first number: ");
+		int y1 = scanner.nextInt();
+		
+		System.out.println("Enter the second number: ");
+		int y2 = scanner.nextInt();
+		
+		
+		distanceBetweenTwoLines(x1, x2, y1, y2);
+		
+	}
+
+	private static void distanceBetweenTwoLines(int x1, int x2, int y1, int y2) {
+		double Distance = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 -y1, 2));
+		
+		System.out.println("Distance between two lines: " + Distance);
+	}
+}

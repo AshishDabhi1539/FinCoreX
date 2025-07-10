@@ -1,0 +1,18 @@
+package com.tss.test;
+
+import com.tss.model.IDemo;
+
+public class DemoTest {
+
+	public static void main(String[] args) {
+		IDemo object1 = (number) -> System.out.println("Learning Functional Interface"+number);
+		
+		
+		show(object1);
+	}
+
+	private static void show(IDemo object1) {
+		// TODO Auto-generted method stub
+		object1.dispaly(10);
+	}
+}

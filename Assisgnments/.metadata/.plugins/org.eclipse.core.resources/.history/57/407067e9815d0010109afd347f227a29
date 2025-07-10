@@ -1,0 +1,10 @@
+package com.tss.model;
+
+public class MOdernStyle {
+
+	    public String getStyleName() {
+	        return "Modern";
+	    
+	}
+
+}

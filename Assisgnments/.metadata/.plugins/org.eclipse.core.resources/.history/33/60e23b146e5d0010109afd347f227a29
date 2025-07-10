@@ -1,0 +1,5 @@
+package com.tss.creational.singleton.test;
+
+public class SingletonTest {
+
+}
