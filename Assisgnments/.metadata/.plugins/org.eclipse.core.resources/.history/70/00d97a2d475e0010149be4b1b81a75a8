@@ -1,0 +1,10 @@
+package com.tss.structural.decorator.test;
+
+public class CarInspectionTest {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

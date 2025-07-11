@@ -1,0 +1,10 @@
+package com.tss.structural.adaptor.test;
+
+public class ItemTest {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

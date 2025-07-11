@@ -1,0 +1,23 @@
+package com.tss.creational.facade.test;
+
+import com.tss.creational.facade.model.HotelReception;
+
+public class HotelMenuTest {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		HotelReception reception = new HotelReception();
+
+		
+		System.out.println("Enter the option:"
+				+ "\n 1. Indian Menu"
+				+ "\n 2. Italian Menu");
+        System.out.println("Indian Menu:");
+        reception.getIndianMenu();
+
+        System.out.println("Italian Menu:");
+        reception.getItalianMenu();
+	}
+
+}

@@ -1,0 +1,18 @@
+package com.tss.structural.adaptor.model;
+
+public class HatAdaptor implements IItem {
+    private Hat hat;
+
+    public HatAdaptor(Hat hat) {
+        this.hat = hat;
+    }
+
+    public String getItemName() {
+        return hat.getShortName()+hat.getLongName();
+    }
+
+    public double getItemPrice() {
+        return hat.getBasePrice() - (hat.getBasePrice() * hat.getDiscount()/100);
+    }
+}
+

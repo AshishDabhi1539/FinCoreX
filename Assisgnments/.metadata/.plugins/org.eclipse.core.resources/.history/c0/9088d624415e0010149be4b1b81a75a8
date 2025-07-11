@@ -1,0 +1,38 @@
+package com.tss.structural.adaptor.model;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ShoppingCart {
+    private List<IItem> cartItems;
+
+    public ShoppingCart() {
+        this.cartItems = new ArrayList<>();
+    }
+
+    public void addItemsToCart(IItem items) {
+        cartItems.add(items);
+    }
+
+    public List<IItem> getCartItems() {
+        return cartItems;
+    }
+
+    public double getCartPrice() {
+        double total = 0;
+        for (IItem item : cartItems) {
+            total += item.getItemPrice();
+        }
+        return total;
+    }
+
+    public void displayCart() {
+    	System.out.printf("%-5s %-20s %10s\n", "Sr.", "Item Name", "Price");
+        System.out.println("------------------------------------------");
+        int srNo = 1;
+        for (IItem item : items) {
+            System.out.printf("%-5d %-20s %10.2f\n", srNo++, item.getItemName(), item.getItemPrice());
+        }
+        System.out.println("------------------------------------------");
+        System.out.printf("%-25s %10.2f\n", "Total:", getCartPrice());
+    }
+}
