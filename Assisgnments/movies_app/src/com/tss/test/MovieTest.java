@@ -1,10 +1,7 @@
 package com.tss.test;
 
 import java.util.Scanner;
-
-import com.tss.model.MovieManager;
-import com.tss.model.MovieStoreEmptyException;
-import com.tss.model.MovieStoreFullException;
+import com.tss.model.*;
 
 public class MovieTest {
     public static void main(String[] args) {
@@ -12,21 +9,30 @@ public class MovieTest {
         MovieManager manager = new MovieManager();
 
         while (true) {
+            System.out.println("\n========== Movie Management ==========");
             System.out.println("1. Display movies");
-            System.out.println( "2. Add movies");
-            System.out.println("3. Delete Movie");
-            System.out.println("4. Clear all");
+            System.out.println("2. Add movie");
+            System.out.println("3. Delete movie by ID");
+            System.out.println("4. Clear all movies");
             System.out.println("5. Exit");
-            int choice = scanner.nextInt();
-            scanner.nextLine(); 
+            System.out.print("Enter choice: ");
+
+            int choice;
+            try {
+                choice = Integer.parseInt(scanner.nextLine());
+            } catch (Exception e) {
+                System.out.println("Please enter a valid number.");
+                continue;
+            }
 
             try {
                 switch (choice) {
                     case 1:
                         manager.displayMovies();
                         break;
+
                     case 2:
-                        System.out.print("Enter name: ");
+                        System.out.print("Enter movie name: ");
                         String name = scanner.nextLine();
 
                         String genre;
@@ -34,18 +40,18 @@ public class MovieTest {
                             System.out.print("Enter genre (letters only): ");
                             genre = scanner.nextLine();
                             if (genre.matches("[a-zA-Z]+")) break;
-                            System.out.println("Invalid genre. Please enter letters only.");
+                            System.out.println("Invalid genre. Only letters allowed.");
                         }
 
                         int year;
                         while (true) {
-                            System.out.print("Enter year (4-digit): ");
+                            System.out.print("Enter year (YYYY): ");
                             String yearStr = scanner.nextLine();
                             if (yearStr.matches("\\d{4}")) {
                                 year = Integer.parseInt(yearStr);
                                 break;
                             }
-                            System.out.println("Invalid year. Please enter a 4-digit number.");
+                            System.out.println("Year must be 4 digits.");
                         }
 
                         manager.addMovie(name, genre, year);
@@ -56,17 +62,21 @@ public class MovieTest {
                         String id = scanner.nextLine();
                         manager.deleteMovie(id);
                         break;
+
                     case 4:
                         manager.clearMovies();
                         break;
+
                     case 5:
                         System.out.println("Exiting...");
+                        scanner.close();
                         return;
+
                     default:
                         System.out.println("Invalid choice.");
                 }
-            } catch (MovieStoreFullException | MovieStoreEmptyException exception) {
-                System.out.println(exception.getMessage());
+            } catch (MovieStoreFullException | MovieStoreEmptyException e) {
+                System.out.println(e.getMessage());
             }
         }
     }

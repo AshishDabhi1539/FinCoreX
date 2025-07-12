@@ -1,4 +1,6 @@
 package com.tss.model;
+
+
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -8,66 +10,76 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MovieManager {
-	
-	
 
-	    private static final int MAX_MOVIES = 5;
-	    private static final String FILE_NAME = "movies.ser";
-	    private List<Movie> movies;
+    private static final int MAX_MOVIES = 5;
+    private static final String FILE_NAME = "movies.ser";
+    private List<Movie> movies;
 
-	    public MovieManager() {
-	        movies = loadMovies();
-	    }
+    public MovieManager() {
+        movies = loadMovies();
+    }
 
-	    
-		private List<Movie> loadMovies() {
-	        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILE_NAME))) {
-	            return (List<Movie>) ois.readObject();
-	        } catch (Exception e) {
-	            return new ArrayList<>();
-	        }
-	    }
+    @SuppressWarnings("unchecked")
+    private List<Movie> loadMovies() {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILE_NAME))) {
+            return (List<Movie>) ois.readObject();
+        } catch (Exception e) {
+            return new ArrayList<>();
+        }
+    }
 
-	    private void saveMovies() {
-	        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(FILE_NAME))) {
-	            oos.writeObject(movies);
-	        } catch (IOException e) {
-	            System.out.println("Error saving movies.");
-	        }
-	    }
+    private void saveMovies() {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(FILE_NAME))) {
+            oos.writeObject(movies);
+        } catch (IOException e) {
+            System.out.println("Error saving movies.");
+        }
+    }
 
-	    public void addMovie(String name, String genre, int year) throws MovieStoreFullException {
-	        if (movies.size() >= MAX_MOVIES) {
-	            throw new MovieStoreFullException("Cannot add more movies. Movie store is full.");
-	        }
-	        Movie movie = new Movie(name, genre, year);
-	        movies.add(movie);
-	        saveMovies();
-	        System.out.println("Movie added successfully.");
-	    }
+    public void addMovie(String name, String genre, int year) throws MovieStoreFullException {
+        if (movies.size() >= MAX_MOVIES) {
+            throw new MovieStoreFullException("Cannot add more movies. Movie store is full.");
+        }
 
-	    public void displayMovies() throws MovieStoreEmptyException {
-	        if (movies.isEmpty()) {
-	            throw new MovieStoreEmptyException("No movies to display.");
-	        }
-	        for (Movie m : movies) {
-	            System.out.println(m);
-	        }
-	    }
+        Movie movie = new Movie(name, genre, year);
+        movies.add(movie);
+        saveMovies();
+        System.out.println("Movie added successfully.");
+    }
 
-	    public void deleteMovie(String id) throws MovieStoreEmptyException {
-	        if (movies.isEmpty()) {
-	            throw new MovieStoreEmptyException("No movies to delete.");
-	        }
-	        movies.removeIf(movie -> movie.id.equals(id));
-	        saveMovies();
-	        System.out.println("Movie deleted (if existed).");
-	    }
+    public void displayMovies() throws MovieStoreEmptyException {
+        if (movies.isEmpty()) {
+            throw new MovieStoreEmptyException("No movies to display.");
+        }
 
-	    public void clearMovies() {
-	        movies.clear();
-	        saveMovies();
-	        System.out.println("All movies cleared.");
-	    }
-	
+        System.out.println("+--------+----------------------+------------+------+" );
+        System.out.printf("| %-6s | %-20s | %-10s | %-4s |\n", "ID", "Name", "Genre", "Year");
+        System.out.println("+--------+----------------------+------------+------+" );
+
+        for (Movie movie : movies) {
+            System.out.printf("| %-6s | %-20s | %-10s | %-4d |\n",
+                    movie.id,
+                    movie.name.length() > 20 ? movie.name.substring(0, 17) + "..." : movie.name,
+                    movie.genre.length() > 10 ? movie.genre.substring(0, 9) + "…" : movie.genre,
+                    movie.year);
+        }
+
+        System.out.println("+--------+----------------------+------------+------+\n");
+    }
+
+
+    public void deleteMovie(String id) throws MovieStoreEmptyException {
+        if (movies.isEmpty()) {
+            throw new MovieStoreEmptyException("No movies to delete.");
+        }
+        boolean removed = movies.removeIf(movie -> movie.id.equalsIgnoreCase(id));
+        saveMovies();
+        System.out.println(removed ? "Movie deleted." : "Movie ID not found.");
+    }
+
+    public void clearMovies() {
+        movies.clear();
+        saveMovies();
+        System.out.println("All movies cleared.");
+    }
 }

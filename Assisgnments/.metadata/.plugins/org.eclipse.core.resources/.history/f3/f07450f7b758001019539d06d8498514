@@ -1,7 +1,0 @@
-package com.tss.model;
-
-public class MovieStoreEmptyException extends Exception {
-    public MovieStoreEmptyException(String message) {
-        super(message);
-    }
-}
