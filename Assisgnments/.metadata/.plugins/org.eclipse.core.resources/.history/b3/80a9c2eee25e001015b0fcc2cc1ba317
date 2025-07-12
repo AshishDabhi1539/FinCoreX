@@ -67,20 +67,6 @@ public class MovieManager {
         System.out.println("+--------+----------------------+------------+------+\n");
     }
 
-    public Movie findMovieById(String id) throws NoSuchMovieExceptionFound {
-        if (movies.isEmpty()) {
-            throw new NoSuchMovieExceptionFound("Movie list is empty.");
-        }
-
-        for (Movie movie : movies) {
-            if (movie.id.equalsIgnoreCase(id)) {
-                return movie;
-            }
-        }
-
-        throw new NoSuchMovieExceptionFound("Movie with ID '" + id + "' not found.");
-    }
- 
 
     public void deleteMovie(String id) throws MovieStoreEmptyException {
         if (movies.isEmpty()) {

@@ -1,13 +1,7 @@
 package com.tss.test;
 
 import java.util.Scanner;
-
-import com.tss.model.Movie;
-import com.tss.model.MovieManager;
-import com.tss.model.MovieStoreEmptyException;
-import com.tss.model.MovieStoreFullException;
-import com.tss.model.NoSuchMovieExceptionFound;
-
+import com.tss.model.*;
 
 public class MovieTest {
     public static void main(String[] args) {
@@ -70,25 +64,7 @@ public class MovieTest {
                         manager.deleteMovie(id);
                         break;
                         
-                    case 4:
-                        System.out.print("Enter movie ID to search: ");
-                        String searchId = scanner.nextLine();
-                        try {
-                            Movie foundMovie = manager.findMovieById(searchId);
-                            System.out.println("+--------+----------------------+------------+------+" );
-                            System.out.printf("| %-6s | %-20s | %-10s | %-4s |\n", "ID", "Name", "Genre", "Year");
-                            System.out.println("+--------+----------------------+------------+------+" );
-                            System.out.printf("| %-6s | %-20s | %-10s | %-4d |\n",
-                                    foundMovie.id,
-                                    foundMovie.name.length() > 20 ? foundMovie.name.substring(0, 17) + "..." : foundMovie.name,
-                                    foundMovie.genre.length() > 10 ? foundMovie.genre.substring(0, 9) + "…" : foundMovie.genre,
-                                    foundMovie.year);
-                            System.out.println("+--------+----------------------+------------+------+\n");
-                        } catch (NoSuchMovieExceptionFound exception) {
-                            System.out.println(exception.getMessage());
-                        }
-                        break;
-    
+                    case 4:    
 
                     case 5:
                         manager.clearMovies();
