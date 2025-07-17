@@ -4,41 +4,57 @@ import com.tss.model.cuisine.Cuisine;
 import com.tss.model.menu.BaseMenuItem;
 import com.tss.util.DataStore;
 
-import java.util.*;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CuisineService {
     private static CuisineService instance;
-    private static final String CUISINE_PATH = "data/cuisines/"; // Folder to store cuisine files
+    private static final String CUISINE_PATH = "data/cuisines/";
 
     private CuisineService() {}
 
     public static CuisineService getInstance() {
-        if (instance == null) instance = new CuisineService();
+        if (instance == null) {
+            instance = new CuisineService();
+        }
         return instance;
     }
 
     public Cuisine loadCuisine(String cuisineName) {
         String path = CUISINE_PATH + cuisineName.toLowerCase() + ".ser";
-        Cuisine cuisine = (Cuisine) DataStore.readObject(path);
-        if (cuisine == null) {
-            System.out.println("⚠️ Cuisine not found or empty: " + cuisineName);
-        }
-        return cuisine;
+        return DataStore.readFromFile(path);  // correct method name
     }
 
     public void saveCuisine(Cuisine cuisine) {
         String path = CUISINE_PATH + cuisine.getName().toLowerCase() + ".ser";
-        DataStore.writeObject(path, cuisine);
+        DataStore.saveToFile(cuisine, path);  // correct method name
     }
 
-    public List<String> listAvailableCuisines() {
-        return List.of("Indian", "Japanese", "Korean", "French"); // Add dynamic scan later if needed
+
+    public void createCuisine(Cuisine cuisine) {
+        saveCuisine(cuisine);
+        System.out.println("✅ New cuisine created: " + cuisine.getName());
+    }
+
+    public static List<String> listAvailableCuisines() {
+        File dir = new File(CUISINE_PATH);
+        List<String> cuisines = new ArrayList<>();
+        if (dir.exists() && dir.isDirectory()) {
+            for (File file : dir.listFiles()) {
+                if (file.getName().endsWith(".ser")) {
+                    String cuisineName = file.getName().replace(".ser", "");
+                    cuisines.add(cuisineName.substring(0, 1).toUpperCase() + cuisineName.substring(1));
+                }
+            }
+        }
+        return cuisines;
     }
 
     public void addMenuItem(Cuisine cuisine, BaseMenuItem item) {
         cuisine.addItem(item);
         saveCuisine(cuisine);
-        System.out.println("✅ Item added: " + item.getName());
+        System.out.println("✅ Item added to " + cuisine.getName() + ": " + item.getName());
     }
 
     public void removeMenuItem(Cuisine cuisine, String itemId) {
@@ -47,15 +63,10 @@ public class CuisineService {
         System.out.println("✅ Item removed: " + itemId);
     }
 
-    public void createCuisine(Cuisine cuisine) {
-        saveCuisine(cuisine);
-        System.out.println("✅ New cuisine added: " + cuisine.getName());
-    }
-
     public void printAllCuisines() {
-        for (String cuisineName : listAvailableCuisines()) {
-            Cuisine cuisine = loadCuisine(cuisineName);
-            if (cuisine != null) cuisine.printMenu();
+        for (String name : listAvailableCuisines()) {
+            Cuisine c = loadCuisine(name);
+            if (c != null) c.printMenu();
         }
     }
 }

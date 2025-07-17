@@ -16,9 +16,9 @@ public class AdminDiscountManager {
         IDiscountStrategy strategy;
         switch (opt) {
             case "1" -> strategy = new FlatDiscount(50);
-            case "2" -> strategy = new FestiveDiscount();
-            case "3" -> strategy = new FreeDeliveryDiscount();
-            case "4" -> strategy = new PercentDiscountOn500();
+//            case "2" -> strategy = new FestiveDiscount();
+            case "2" -> strategy = new FreeDeliveryDiscount();
+            case "3" -> strategy = new PercentDiscountOn500();
             default -> strategy = amount -> amount;
         }
 

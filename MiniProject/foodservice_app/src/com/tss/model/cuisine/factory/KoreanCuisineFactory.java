@@ -1,14 +1,10 @@
 package com.tss.model.cuisine.factory;
 
 import com.tss.model.cuisine.Cuisine;
-import com.tss.model.menu.BaseMenuItem;
+import com.tss.model.cuisine.KoreanCuisine;
 
-public class KoreanCuisineFactory implements ICuisineFactory {
-    @Override
+public class KoreanCuisineFactory implements CuisineFactory {
     public Cuisine createCuisine() {
-        Cuisine cuisine = new Cuisine("Korean");
-        cuisine.addItem(new BaseMenuItem("K301", "Kimchi", "Spicy fermented cabbage", 150));
-        cuisine.addItem(new BaseMenuItem("K302", "Bibimbap", "Mixed rice with vegetables", 280));
-        return cuisine;
+        return new KoreanCuisine();
     }
 }

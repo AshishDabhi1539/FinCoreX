@@ -1,0 +1,11 @@
+RECEIPT - Order ID: cd258f7c
+Date: 17-07-2025 10:37
+Customer: mahek morzaria
+Delivery Partner: Swiggy
+--------------------------------------------------
+Ratatouille - ₹200.0
+Ratatouille - ₹200.0
+--------------------------------------------------
+Total Amount: ₹400.0
+Status: PLACED
+Thank you for ordering with us! 😊

@@ -1,6 +1,8 @@
 package com.tss.model.menu;
 
-public interface IMenuItem {
+import java.io.Serializable;
+
+public interface IMenuItem extends Serializable {
     String getId();
     String getName();
     String getDescription();

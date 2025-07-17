@@ -1,0 +1,10 @@
+RECEIPT - Order ID: 569e5730
+Date: 17-07-2025 10:51
+Customer: mahek morzaria
+Delivery Partner: Swiggy
+--------------------------------------------------
+Ramen - ₹300.0
+--------------------------------------------------
+Total Amount: ₹300.0
+Status: PLACED
+Thank you for ordering with us! 😊

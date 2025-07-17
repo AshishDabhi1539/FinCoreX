@@ -17,6 +17,6 @@ public class DiscountedItemDecorator extends BaseMenuItem {
 
     @Override
     public String toString() {
-        return item.getName() + " [Discounted " + (int)(discountRate * 100) + "%] => ₹" + getPrice();
+        return item.getName() + " [Discounted " + (int)(discountRate * 100) + "%] => " + getPrice();
     }
 }

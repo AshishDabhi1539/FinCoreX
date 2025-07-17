@@ -7,7 +7,7 @@ public class AdminProxy {
         this.realAdmin = realAdmin;
     }
 
-    // Authenticates against hardcoded admin credentials
+    
     public boolean login(String username, String password) {
         if (realAdmin.getUsername().equals(username) &&
             realAdmin.getPassword().equals(password)) {

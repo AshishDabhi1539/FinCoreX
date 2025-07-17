@@ -1,59 +1,49 @@
 package com.tss.util;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.HashMap;
-import java.util.Map;
-
-import com.tss.customer.Customer;
+import java.io.*;
 
 public class DataStore {
 
-    
-    public static void writeObject(String filePath, Object object) {
-        try {
-            File file = new File(filePath);
-            file.getParentFile().mkdirs();
-            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file));
+    public static <T> void saveToFile(T object, String filename) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
             oos.writeObject(object);
-            oos.close();
-            System.out.println("Saved: " + filePath);
         } catch (IOException e) {
-            System.out.println("Failed to save: " + e.getMessage());
+            System.out.println("[Error] Saving file failed: " + e.getMessage());
         }
     }
 
-   
-    public static Object readObject(String filePath) {
-        try {
-            File file = new File(filePath);
-            if (!file.exists()) return null;
-            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
-            Object obj = ois.readObject();
-            ois.close();
-            return obj;
+    @SuppressWarnings("unchecked")
+    public static <T> T readFromFile(String filename) {
+        File file = new File(filename);
+        if (!file.exists()) {
+            return null;
+        }
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
+            return (T) ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
-            System.out.println("⚠️ Error reading: " + e.getMessage());
+            System.out.println("[Error] Reading file failed: " + e.getMessage());
             return null;
         }
     }
 
-   
-    @SuppressWarnings("unchecked")
-    public static Map<String, Customer> loadCustomerData(String filePath) {
-        Object obj = readObject(filePath);
-        if (obj instanceof Map) {
-            return (Map<String, Customer>) obj;
+    public static void appendToFile(Object object, String filename) {
+        try (FileOutputStream fos = new FileOutputStream(filename, true);
+             AppendingObjectOutputStream oos = new AppendingObjectOutputStream(fos)) {
+            oos.writeObject(object);
+        } catch (IOException e) {
+            System.out.println("[Error] Appending to file failed: " + e.getMessage());
         }
-        return new HashMap<>();
     }
 
-   
-    public static void saveCustomerData(String filePath, Map<String, Customer> customerMap) {
-        writeObject(filePath, customerMap);
+    private static class AppendingObjectOutputStream extends ObjectOutputStream {
+        public AppendingObjectOutputStream(OutputStream out) throws IOException {
+            super(out);
+        }
+        @Override
+        protected void writeStreamHeader() throws IOException {
+            reset();
+        }
     }
+    
+    
 }

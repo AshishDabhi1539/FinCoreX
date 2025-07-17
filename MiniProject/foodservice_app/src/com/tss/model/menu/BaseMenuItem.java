@@ -1,8 +1,6 @@
 package com.tss.model.menu;
 
-import java.io.Serializable;
-
-public class BaseMenuItem implements Serializable, IMenuItem {
+public class BaseMenuItem implements IMenuItem {
     private static final long serialVersionUID = 1L;
 
     private String id;
@@ -32,6 +30,6 @@ public class BaseMenuItem implements Serializable, IMenuItem {
 
     @Override
     public String toString() {
-        return "🍽️ [" + id + "] " + name + " - ₹" + price + " | " + description;
+        return "[" + id + "] " + name + " - ₹" + price + " | " + description;
     }
 }
