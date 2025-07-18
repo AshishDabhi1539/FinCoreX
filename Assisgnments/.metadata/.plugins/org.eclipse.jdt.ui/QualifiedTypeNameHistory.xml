@@ -19,11 +19,13 @@
     <fullyQualifiedTypeName name="com.tss.model.Robot"/>
     <fullyQualifiedTypeName name="java.util.function.Supplier"/>
     <fullyQualifiedTypeName name="jdk.internal.org.jline.terminal.TerminalBuilder.SystemOutput"/>
-    <fullyQualifiedTypeName name="java.util.List"/>
     <fullyQualifiedTypeName name="java.util.function.Predicate"/>
     <fullyQualifiedTypeName name="java.util.function.Function"/>
     <fullyQualifiedTypeName name="java.util.function.Consumer"/>
     <fullyQualifiedTypeName name="com.tss.creational.factory.model.CarType"/>
     <fullyQualifiedTypeName name="com.tss.creational.factory.model.Mahindra"/>
+    <fullyQualifiedTypeName name="com.tss.behavioural.model.SmsNotifier"/>
     <fullyQualifiedTypeName name="java.util.Scanner"/>
+    <fullyQualifiedTypeName name="com.tss.model.StudentService"/>
+    <fullyQualifiedTypeName name="java.util.List"/>
 </qualifiedTypeNameHistroy>

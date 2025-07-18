@@ -1,6 +1,0 @@
-package com.tss.model;
-
-public interface IPatternPrint {
-
-	void pattern(int number);
-}

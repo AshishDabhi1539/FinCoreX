@@ -10,6 +10,7 @@
 		<item key="isRegEx" value="false"/>
 		<item key="replaceBarOpen" value="true"/>
 		<list key="findhistory">
+			<item value="sc"/>
 			<item value="creditScore"/>
 			<item value="income"/>
 			<item value="age"/>
@@ -19,16 +20,15 @@
 			<item value="hash"/>
 			<item value="alice"/>
 			<item value="generateId"/>
-			<item value="sc"/>
 			<item value="rn"/>
 			<item value="random"/>
 		</list>
 		<list key="replacehistory">
+			<item value="scanner"/>
 			<item value="customerCreditScore"/>
 			<item value="customerIncome"/>
 			<item value="customerAge"/>
 			<item value="customerName"/>
-			<item value="scanner"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">

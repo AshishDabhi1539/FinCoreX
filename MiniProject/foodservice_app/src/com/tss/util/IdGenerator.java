@@ -20,10 +20,10 @@ public class IdGenerator {
 
         int max = 0;
         for (BaseMenuItem item : items) {
-            String id = item.getId(); // e.g. "IN003"
+            String id = item.getId(); 
             if (id.length() >= 5) {
                 try {
-                    String numPart = id.substring(2); // "003"
+                    String numPart = id.substring(2);
                     int num = Integer.parseInt(numPart);
                     if (num > max) max = num;
                 } catch (NumberFormatException ignored) {}

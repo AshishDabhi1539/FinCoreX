@@ -22,7 +22,7 @@ public class Order implements Serializable {
     private String assignedDeliveryPartner;
 
     public Order(Customer customer, List<BaseMenuItem> items, double totalAmount) {
-        this.orderId = UUID.randomUUID().toString().substring(0, 8); // 8-char ID
+        this.orderId = UUID.randomUUID().toString().substring(0, 8); 
         this.customer = customer;
         this.items = items;
         this.totalAmount = totalAmount;

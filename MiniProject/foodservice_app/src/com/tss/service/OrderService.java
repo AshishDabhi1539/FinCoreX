@@ -54,13 +54,13 @@ public class OrderService {
             return;
         }
 
-        // 2. Show Menu
-        System.out.println("\n📋 Menu for " + cuisine.getName() + ":");
+       
+        System.out.println("\nMenu for " + cuisine.getName() + ":");
         for (int i = 0; i < menuItems.size(); i++) {
             System.out.println((i + 1) + ". " + menuItems.get(i));
         }
 
-        // 3. Select items
+        
         List<BaseMenuItem> selectedItems = new ArrayList<>();
         while (true) {
             System.out.print("Enter item number to add (0 to finish): ");

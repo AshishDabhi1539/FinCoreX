@@ -1,9 +1,0 @@
-package com.tss.model;
-
-public class Sparrow {
-
-	@Override
-    public void fly() {
-        System.out.println("Sparrow Fly");
-    }
-}

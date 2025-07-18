@@ -1,7 +1,0 @@
-package com.tss.model;
-
-@FuntionalInterface
-public interface IDemo {
-
-	void dispaly();
-}

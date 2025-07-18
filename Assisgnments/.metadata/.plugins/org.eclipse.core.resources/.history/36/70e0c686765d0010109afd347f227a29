@@ -1,6 +1,0 @@
-package com.tss.creational.factory.model;
-
-public interface ILicenseVehicle {
-
-	void generateLicensePlat();
-}
