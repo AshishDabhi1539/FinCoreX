@@ -1,7 +1,12 @@
 package com.tss.model.cuisine;
 
 public class JapaneseCuisine extends Cuisine {
-    public JapaneseCuisine() {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public JapaneseCuisine() {
         super("Japanese"); 
     }
 

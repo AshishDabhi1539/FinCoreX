@@ -1,7 +1,12 @@
 package com.tss.model.cuisine;
 
 public class KoreanCuisine extends Cuisine {
-    public KoreanCuisine() {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public KoreanCuisine() {
         super("Korean");
     }
 

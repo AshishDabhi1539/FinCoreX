@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Cuisine implements Serializable {
-    protected String name;
+    
+	private static final long serialVersionUID = 1L;
+	protected String name;
     protected List<BaseMenuItem> menuItems;
 
     public Cuisine(String name) {
@@ -31,13 +33,25 @@ public abstract class Cuisine implements Serializable {
     }
 
     public void printMenu() {
-        System.out.println("\n--- " + name + " Cuisine Menu ---");
         if (menuItems.isEmpty()) {
-            System.out.println("No items available.");
-        } else {
-            for (BaseMenuItem item : menuItems) {
-                System.out.println(item);
-            }
+            System.out.println(" No menu items available.");
+            return;
         }
+
+        System.out.println("\n--- " + name + " Cuisine Menu ---");
+        System.out.printf("+--------+----------------------+--------+------------------------------+%n");
+        System.out.printf("| ID     | Name                 | Price  | Description                  |%n");
+        System.out.printf("+--------+----------------------+--------+------------------------------+%n");
+
+        for (BaseMenuItem item : menuItems) {
+            System.out.printf("| %-6s | %-20s | ₹%-5.1f | %-28s |%n",
+                    item.getId(),
+                    item.getName(),
+                    item.getPrice(),
+                    item.getDescription());
+        }
+
+        System.out.printf("+--------+----------------------+--------+------------------------------+%n");
     }
+
 }

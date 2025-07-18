@@ -27,14 +27,14 @@ public class OrderService {
     }
 
     public static void placeOrder(Customer customer, Scanner scanner) {
-        // 1. Show cuisines
+        
         List<String> availableCuisines = CuisineService.listAvailableCuisines();
         if (availableCuisines.isEmpty()) {
-            System.out.println("❌ No cuisines available.");
+            System.out.println("No cuisines available.");
             return;
         }
 
-        System.out.println("\n📜 Available Cuisines:");
+        System.out.println("\nAvailable Cuisines:");
         for (String c : availableCuisines) {
             System.out.println("- " + c);
         }
@@ -44,13 +44,13 @@ public class OrderService {
 
         Cuisine cuisine = CuisineService.getInstance().loadCuisine(cuisineName.toLowerCase());
         if (cuisine == null) {
-            System.out.println("❌ Cuisine not found.");
+            System.out.println("Cuisine not found.");
             return;
         }
 
         List<BaseMenuItem> menuItems = MenuManager.getMenuItems(cuisine);
         if (menuItems == null || menuItems.isEmpty()) {
-            System.out.println("❌ No items found for this cuisine.");
+            System.out.println("No items found for this cuisine.");
             return;
         }
 
@@ -68,7 +68,7 @@ public class OrderService {
 
             if (choice == 0) break;
             if (choice < 1 || choice > menuItems.size()) {
-                System.out.println("❌ Invalid choice.");
+                System.out.println("Invalid choice.");
                 continue;
             }
 
@@ -76,52 +76,51 @@ public class OrderService {
         }
 
         if (selectedItems.isEmpty()) {
-            System.out.println("⚠️ No items selected.");
+            System.out.println("No items selected.");
             return;
         }
 
-        // 4. Calculate total
+       
         double total = selectedItems.stream().mapToDouble(BaseMenuItem::getPrice).sum();
 
-        // 5. Apply Discounts
+       
         DiscountContext discountContext = new DiscountContext();
         discountContext.autoSetStrategy(total);  // assumes you implemented autoSetStrategy
         double discountedTotal = discountContext.applyDiscount(total);
 
-        // 6. Assign delivery partner
+       
         DeliveryContext deliveryContext = new DeliveryContext();
         String partner = deliveryContext.assignRandomPartner();
 
-        // 7. Create Order
+       
         Order order = new Order(customer, selectedItems, total);
         order.setAssignedDeliveryPartner(partner);
         orders.add(order);
 
-        // Save all orders
+    
         DataStore.saveToFile(orders, ORDER_FILE);
 
-        // 8. Simulate payment
+        
         PaymentService.processPayment(scanner, discountedTotal);
 
-        // 9. Print Invoice
         InvoicePrinter.printInvoice(order, discountedTotal, partner, "Cash");
 
-        // 10. Save individual receipt
+        
         File orderDir = new File("data/orders/");
         if (!orderDir.exists()) orderDir.mkdirs();
-        String orderPath = "data/orders/" + order.getOrderId() + ".dat";
+        String orderPath = "data/orders/" + order.getOrderId() + ".ser";
         DataStore.saveToFile(order, orderPath);
 
-        System.out.println("✅ Order placed successfully!");
+        System.out.println("Order placed successfully!");
     }
     
     public static void viewAllOrders() {
         if (orders.isEmpty()) {
-            System.out.println("❌ No orders found.");
+            System.out.println("No orders found.");
             return;
         }
 
-        System.out.println("\n📦 All Orders:");
+        System.out.println("\nAll Orders:");
         for (Order order : orders) {
             System.out.println("Order ID: " + order.getOrderId()
                     + ", Customer: " + order.getCustomer().getName()

@@ -1,14 +1,23 @@
 package com.tss.model.menu;
 
 public class DiscountedItemDecorator extends BaseMenuItem {
-    private final BaseMenuItem item;
-    private final double discountRate; // 0.1 for 10%, 0.2 for 20%, etc.
+    
 
-    public DiscountedItemDecorator(BaseMenuItem item, double discountRate) {
-        super(item.getId(), item.getName(), item.getDescription(), item.getPrice());
-        this.item = item;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private final BaseMenuItem item;
+    private final double discountRate; 
+
+    
+    public DiscountedItemDecorator(String id, String name, double price, String description, BaseMenuItem item, double discountRate) {
+		super(id, name, price, description);
+		// TODO Auto-generated constructor stub
+		this.item = item;
         this.discountRate = discountRate;
-    }
+	}
+    
 
     @Override
     public double getPrice() {
@@ -17,6 +26,6 @@ public class DiscountedItemDecorator extends BaseMenuItem {
 
     @Override
     public String toString() {
-        return item.getName() + " [Discounted " + (int)(discountRate * 100) + "%] => " + getPrice();
+        return item.getName() + " [Discounted " + (int)(discountRate * 100) + "%] = " + getPrice();
     }
 }

@@ -1,6 +1,5 @@
 package com.tss.model.order;
 
-import com.tss.model.delivery.DeliveryPartner;
 import com.tss.model.menu.BaseMenuItem;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -10,7 +9,11 @@ import java.util.UUID;
 import com.tss.customer.Customer;
 
 public class Order implements Serializable {
-    private final String orderId;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private final String orderId;
     private final Customer customer;
     private final List<BaseMenuItem> items;
     private final double totalAmount;

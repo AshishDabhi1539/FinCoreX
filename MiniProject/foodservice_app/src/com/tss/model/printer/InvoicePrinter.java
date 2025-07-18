@@ -34,10 +34,10 @@ public class InvoicePrinter {
         invoice.append(String.format("| %-36s ₹%-8.2f |\n", "Discounted Total", discountedTotal));
         invoice.append("+------------------------------------------------+\n");
 
-        // Print to console
+        
         System.out.println(invoice);
 
-        // Save to receipt file
+       
         saveInvoiceToFile(order.getOrderId(), invoice.toString());
     }
 
