@@ -31,9 +31,43 @@ public class PaymentService {
         }
     }
 
-    // This method invokes simulatePayment and logs the choice
-    public static void processPayment(Scanner scanner, double discountedTotal) {
-        String paymentMode = simulatePayment(discountedTotal);
-        System.out.println("Payment received via " + paymentMode + ". Thank you!");
+    public static String processPayment(Scanner scanner, double amount) {
+        System.out.println("Total amount to pay: ₹" + amount);
+        System.out.println("Select payment mode:\n1. Cash\n2. Card\n3. UPI");
+
+        int choice;
+        try {
+            choice = Integer.parseInt(scanner.nextLine());
+        } catch (Exception e) {
+            System.out.println("Invalid input. Defaulting to Cash.");
+            choice = 1;
+        }
+
+        Payment payment = new BasicPayment();
+        String paymentMode;
+
+        switch (choice) {
+            case 1:
+                payment = new CODPayment(payment);
+                paymentMode = "Cash";
+                break;
+            case 2:
+                payment = new CardPayment(payment);
+                paymentMode = "Card";
+                break;
+            case 3:
+                payment = new UPIPayment(payment);
+                paymentMode = "UPI";
+                break;
+            default:
+                System.out.println("Invalid choice. Defaulting to Cash.");
+                payment = new CODPayment(payment);
+                paymentMode = "Cash";
+                break;
+        }
+
+        payment.pay(amount);
+        return paymentMode;
     }
+
 }

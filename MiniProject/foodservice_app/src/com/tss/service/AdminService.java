@@ -1,12 +1,13 @@
-package com.tss.admin;
-
-import com.tss.util.DataStore;
+package com.tss.service;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.tss.admin.Admin;
+import com.tss.util.DataStore;
 
 public class AdminService {
     private static final String ADMIN_FILE = "data/admins.ser";

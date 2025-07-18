@@ -14,12 +14,12 @@ public class InvoicePrinter {
         invoice.append("+------------------------------------------------+\n");
         invoice.append(String.format("| %-46s |\n", "INVOICE"));
         invoice.append("+------------------------------------------------+\n");
-        invoice.append(String.format("| Order ID       : %-30s |\n", order.getOrderId()));
-        invoice.append(String.format("| Customer Name  : %-30s |\n", order.getCustomer().getName()));
-        invoice.append(String.format("| Date           : %-30s |\n", order.getTimestamp().toLocalDate()));
-        invoice.append(String.format("| Time           : %-30s |\n", order.getTimestamp().toLocalTime().withNano(0)));
-        invoice.append(String.format("| Payment Mode   : %-30s |\n", paymentMode));
-        invoice.append(String.format("| Delivery Via   : %-30s |\n", deliveryPartner));
+        invoice.append(String.format("| Order ID       : %-30s|\n", order.getOrderId()));
+        invoice.append(String.format("| Customer Name  : %-30s|\n", order.getCustomer().getName()));
+        invoice.append(String.format("| Date           : %-30s|\n", order.getTimestamp().toLocalDate()));
+        invoice.append(String.format("| Time           : %-30s|\n", order.getTimestamp().toLocalTime().withNano(0)));
+        invoice.append(String.format("| Delivery Via   : %-30s|\n", paymentMode));
+        invoice.append(String.format("| Payment Mode   : %-30s|\n", deliveryPartner));
         invoice.append("+------------------------------------------------+\n");
         invoice.append(String.format("| %-20s %-6s %-8s %-9s |\n", "Item", "Qty", "Price", "Subtotal"));
         invoice.append("+------------------------------------------------+\n");
@@ -46,7 +46,7 @@ public class InvoicePrinter {
         try (FileWriter writer = new FileWriter(receiptFile)) {
             writer.write(content);
         } catch (IOException e) {
-            System.out.println("[Error] Saving receipt failed: " + e.getMessage());
+//            System.out.println("[Error] Saving receipt failed: " + e.getMessage());
         }
     }
 }

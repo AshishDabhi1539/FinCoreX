@@ -16,116 +16,110 @@ import com.tss.payment.PaymentService;
 import com.tss.util.DataStore;
 
 public class OrderService {
-    private static final String ORDER_FILE = "data/orders.ser";
-    private static List<Order> orders = new ArrayList<>();
+	private static final String ORDER_FILE = "data/orders.ser";
+	private static List<Order> orders = new ArrayList<>();
 
-    static {
-        List<Order> loaded = DataStore.readFromFile(ORDER_FILE);
-        if (loaded != null) {
-            orders = loaded;
-        }
-    }
+	static {
+		List<Order> loaded = DataStore.readFromFile(ORDER_FILE);
+		if (loaded != null) {
+			orders = loaded;
+		}
+	}
 
-    public static void placeOrder(Customer customer, Scanner scanner) {
-        
-        List<String> availableCuisines = CuisineService.listAvailableCuisines();
-        if (availableCuisines.isEmpty()) {
-            System.out.println("No cuisines available.");
-            return;
-        }
+	public static void placeOrder(Customer customer, Scanner scanner) {
 
-        System.out.println("\nAvailable Cuisines:");
-        for (String c : availableCuisines) {
-            System.out.println("- " + c);
-        }
+		List<String> availableCuisines = CuisineService.listAvailableCuisines();
+		if (availableCuisines.isEmpty()) {
+			System.out.println("No cuisines available.");
+			return;
+		}
 
-        System.out.print("Enter cuisine name to order: ");
-        String cuisineName = scanner.nextLine().trim();
+		System.out.println("\nAvailable Cuisines:");
+		for (String c : availableCuisines) {
+			System.out.println("- " + c);
+		}
 
-        Cuisine cuisine = CuisineService.getInstance().loadCuisine(cuisineName.toLowerCase());
-        if (cuisine == null) {
-            System.out.println("Cuisine not found.");
-            return;
-        }
+		System.out.print("Enter cuisine name to order: ");
+		String cuisineName = scanner.nextLine().trim();
 
-        List<BaseMenuItem> menuItems = MenuManager.getMenuItems(cuisine);
-        if (menuItems == null || menuItems.isEmpty()) {
-            System.out.println("No items found for this cuisine.");
-            return;
-        }
+		Cuisine cuisine = CuisineService.getInstance().loadCuisine(cuisineName.toLowerCase());
+		if (cuisine == null) {
+			System.out.println("Cuisine not found.");
+			return;
+		}
 
-       
-        System.out.println("\nMenu for " + cuisine.getName() + ":");
-        for (int i = 0; i < menuItems.size(); i++) {
-            System.out.println((i + 1) + ". " + menuItems.get(i));
-        }
+		List<BaseMenuItem> menuItems = MenuManager.getMenuItems(cuisine);
+		if (menuItems == null || menuItems.isEmpty()) {
+			System.out.println("No items found for this cuisine.");
+			return;
+		}
 
-        
-        List<BaseMenuItem> selectedItems = new ArrayList<>();
-        while (true) {
-            System.out.print("Enter item number to add (0 to finish): ");
-            int choice = Integer.parseInt(scanner.nextLine());
+		System.out.println("\nMenu for " + cuisine.getName() + ":");
+		for (int i = 0; i < menuItems.size(); i++) {
+			System.out.println((i + 1) + ". " + menuItems.get(i));
+		}
 
-            if (choice == 0) break;
-            if (choice < 1 || choice > menuItems.size()) {
-                System.out.println("Invalid choice.");
-                continue;
-            }
+		List<BaseMenuItem> selectedItems = new ArrayList<>();
+		while (true) {
+			System.out.print("Enter item number to add (0 to finish): ");
+			int choice = Integer.parseInt(scanner.nextLine());
 
-            selectedItems.add(menuItems.get(choice - 1));
-        }
+			if (choice == 0)
+				break;
+			if (choice < 1 || choice > menuItems.size()) {
+				System.out.println("Invalid choice.");
+				continue;
+			}
 
-        if (selectedItems.isEmpty()) {
-            System.out.println("No items selected.");
-            return;
-        }
+			selectedItems.add(menuItems.get(choice - 1));
+		}
 
-       
-        double total = selectedItems.stream().mapToDouble(BaseMenuItem::getPrice).sum();
+		if (selectedItems.isEmpty()) {
+			System.out.println("No items selected.");
+			return;
+		}
 
-       
-        DiscountContext discountContext = new DiscountContext();
-        discountContext.autoSetStrategy(total);  // assumes you implemented autoSetStrategy
-        double discountedTotal = discountContext.applyDiscount(total);
+		double total = selectedItems.stream().mapToDouble(BaseMenuItem::getPrice).sum();
 
-       
-        DeliveryContext deliveryContext = new DeliveryContext();
-        String partner = deliveryContext.assignRandomPartner();
+		DiscountContext discountContext = new DiscountContext();
+		discountContext.autoSetStrategy(total);
+		double discountedTotal = discountContext.applyDiscount(total);
 
-       
-        Order order = new Order(customer, selectedItems, total);
-        order.setAssignedDeliveryPartner(partner);
-        orders.add(order);
+		DeliveryContext deliveryContext = new DeliveryContext();
+		String partner = deliveryContext.assignRandomPartner();
 
-    
-        DataStore.saveToFile(orders, ORDER_FILE);
+		Order order = new Order(customer, selectedItems, total);
+		order.setAssignedDeliveryPartner(partner);
+		orders.add(order);
 
-        
-        PaymentService.processPayment(scanner, discountedTotal);
+		DataStore.saveToFile(orders, ORDER_FILE);
 
-        InvoicePrinter.printInvoice(order, discountedTotal, partner, "Cash");
+		String paymentMode = PaymentService.processPayment(scanner, discountedTotal);
+		InvoicePrinter.printInvoice(order, discountedTotal, paymentMode, partner);
 
-        
-        File orderDir = new File("data/orders/");
-        if (!orderDir.exists()) orderDir.mkdirs();
-        String orderPath = "data/orders/" + order.getOrderId() + ".ser";
-        DataStore.saveToFile(order, orderPath);
+		File orderDir = new File("data/orders/");
+		if (!orderDir.exists())
+			orderDir.mkdirs();
+		String orderPath = "data/orders/" + order.getOrderId() + ".ser";
+		DataStore.saveToFile(order, orderPath);
 
-        System.out.println("Order placed successfully!");
-    }
-    
-    public static void viewAllOrders() {
-        if (orders.isEmpty()) {
-            System.out.println("No orders found.");
-            return;
-        }
+		System.out.println("Order placed successfully!");
 
-        System.out.println("\nAll Orders:");
-        for (Order order : orders) {
-            System.out.println("Order ID: " + order.getOrderId()
-                    + ", Customer: " + order.getCustomer().getName()
-                    + ", Total: ₹" + order.getTotalAmount()
-                    + ", Status: " + order.getStatus());
-        }
-    }
+		System.out.println("Thank you for shopping with us!");
+		System.exit(0);
+
+	}
+
+	public static void viewAllOrders() {
+		if (orders.isEmpty()) {
+			System.out.println("No orders found.");
+			return;
+		}
+
+		System.out.println("\nAll Orders:");
+		for (Order order : orders) {
+			System.out.println("Order ID: " + order.getOrderId() + ", Customer: " + order.getCustomer().getName()
+					+ ", Total: ₹" + order.getTotalAmount() + ", Status: " + order.getStatus());
+		}
+	}
 }

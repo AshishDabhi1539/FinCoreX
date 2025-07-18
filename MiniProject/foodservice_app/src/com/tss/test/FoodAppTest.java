@@ -5,7 +5,7 @@ import java.util.Scanner;
 import com.tss.admin.Admin;
 import com.tss.admin.AdminPanel;
 import com.tss.customer.Customer;
-import com.tss.admin.AdminService;
+import com.tss.service.AdminService;
 import com.tss.service.CustomerService;
 import com.tss.service.OrderService;
 
@@ -58,7 +58,7 @@ public class FoodAppTest {
             AdminPanel adminPanel = new AdminPanel(scanner);
             adminPanel.showAdminMenu();
         } else {
-            System.out.println("❌ Invalid admin credentials.");
+            System.out.println("Invalid admin credentials.");
         }
     }
 
@@ -87,4 +87,4 @@ public class FoodAppTest {
             System.out.println("Registration failed.");
         }
     }
-}
+}//facade

@@ -21,11 +21,7 @@ public class CardPayment extends PaymentDecorator {
                     continue;
                 }
 
-                if (!isValidCardNumber(cardNumber)) {
-                    System.out.println("❌ Invalid card number. Failed Luhn validation.");
-                    continue;
-                }
-
+                
                 break;
             }
 
