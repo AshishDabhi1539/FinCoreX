@@ -758,3 +758,5 @@
 2025-07-17 17:36:15,863 [Worker-334: Launching Executing test in C__Users_mahek.morzaria_Desktop_Java_Assisgnments_unit_testing_project] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\mahek.morzaria\.p2\pool\plugins\com.google.guava.failureaccess_1.0.3.jar
 2025-07-17 17:36:15,878 [Worker-334: Launching Executing test in C__Users_mahek.morzaria_Desktop_Java_Assisgnments_unit_testing_project] INFO  o.e.m.i.launch.MavenLaunchDelegate - Run build in "C:\Users\mahek.morzaria\Desktop\Java\Assisgnments\unit_testing_project":
 2025-07-17 17:36:15,880 [Worker-334: Launching Executing test in C__Users_mahek.morzaria_Desktop_Java_Assisgnments_unit_testing_project] INFO  o.e.m.i.launch.MavenLaunchDelegate -  mvn  -B -Dstyle.color=always test
+2025-07-18 13:56:15,165 [Worker-4: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is out-of-date. Trying to update.
+2025-07-18 13:56:16,170 [Worker-4: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Updating Gradle version information cache failed. Using outdated cache.
