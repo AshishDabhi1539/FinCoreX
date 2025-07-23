@@ -1,24 +1,44 @@
 package com.tss.discounts;
 
-public class DiscountContext {
-    private IDiscountStrategy strategy;
+import java.util.ArrayList;
+import java.util.List;
 
-    public void setStrategy(IDiscountStrategy strategy) {
-        this.strategy = strategy;
+public class DiscountContext {
+    private static DiscountContext instance;
+    private List<IDiscountStrategy> activeDiscounts = new ArrayList<>();
+
+    private DiscountContext() {}
+
+    public static DiscountContext getInstance() {
+        if (instance == null) {
+            instance = new DiscountContext();
+        }
+        return instance;
     }
 
-    public void autoSetStrategy(double total) {
-        if (total >= 500) {
-            strategy = new PercentageDiscount(10);  // 10% off
-        } else if (total >= 200) {
-            strategy = new FlatDiscount(50);       // ₹50 off
-        } else {
-            strategy = new NoDiscount();           // No discount
+    public void addDiscount(IDiscountStrategy discount) {
+        activeDiscounts.add(discount);
+    }
+
+    public void removeDiscount(int index) {
+        if (index >= 0 && index < activeDiscounts.size()) {
+            activeDiscounts.remove(index);
         }
     }
 
-    public double applyDiscount(double total) {
-        if (strategy == null) return total;
-        return strategy.applyDiscount(total);
+    public List<IDiscountStrategy> getActiveDiscounts() {
+        return activeDiscounts;
+    }
+
+    public double applyAllDiscounts(double totalAmount) {
+        double discounted = totalAmount;
+        for (IDiscountStrategy strategy : activeDiscounts) {
+            discounted = strategy.applyDiscount(discounted);
+        }
+        return discounted;
+    }
+
+    public void clearDiscounts() {
+        activeDiscounts.clear();
     }
 }

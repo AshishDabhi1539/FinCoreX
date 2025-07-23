@@ -8,6 +8,6 @@ public class FoodAppTest {
         System.out.println("========= Welcome to Food Ordering Console App =========");
         Scanner scanner = new Scanner(System.in);
         FoodAppFacade facade = new FoodAppFacade(scanner);
-        facade.showMainMenu();
+        facade.startApp(); 
     }
 }

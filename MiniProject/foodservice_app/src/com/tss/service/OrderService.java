@@ -1,9 +1,6 @@
 package com.tss.service;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 import com.tss.customer.Customer;
 import com.tss.discounts.DiscountContext;
@@ -16,110 +13,173 @@ import com.tss.payment.PaymentService;
 import com.tss.util.DataStore;
 
 public class OrderService {
-	private static final String ORDER_FILE = "data/orders.ser";
-	private static List<Order> orders = new ArrayList<>();
+    private static OrderService instance;
+    private static final String ORDER_FILE = "data/orders.ser";
+    private final List<Order> orders;
+    private final Map<Customer, List<BaseMenuItem>> cartMap = new HashMap<>();
 
-	static {
-		List<Order> loaded = DataStore.readFromFile(ORDER_FILE);
-		if (loaded != null) {
-			orders = loaded;
-		}
-	}
+    public OrderService() {
+        List<Order> loaded = DataStore.readFromFile(ORDER_FILE);
+        orders = (loaded != null) ? loaded : new ArrayList<>();
+    }
 
-	public static void placeOrder(Customer customer, Scanner scanner) {
+    public static OrderService getInstance() {
+        if (instance == null) {
+            instance = new OrderService();
+        }
+        return instance;
+    }
 
-		List<String> availableCuisines = CuisineService.listAvailableCuisines();
-		if (availableCuisines.isEmpty()) {
-			System.out.println("No cuisines available.");
-			return;
-		}
+    public void showCustomerDashboard(Customer customer, Scanner scanner) {
+        while (true) {
+            System.out.println("\n========= Customer Dashboard =========");
+            System.out.println("1. Browse & Add Food from Cuisine");
+            System.out.println("2. View/Edit Cart");
+            System.out.println("3. Checkout & Payment");
+            System.out.println("4. Track Order");
+//            System.out.println("5. Provide Feedback");
+            System.out.println("6. Logout");
+            System.out.print("Enter your choice: ");
+            String choice = scanner.nextLine().trim();
 
-		System.out.println("\nAvailable Cuisines:");
-		for (String c : availableCuisines) {
-			System.out.println("- " + c);
-		}
+            switch (choice) {
+                case "1": browseCuisine(customer, scanner); break;
+                case "2": viewEditCart(customer, scanner); break;
+                case "3": checkout(customer, scanner); break;
+                case "4": trackOrder(customer); break;
+//                case "5": collectFeedback(customer, scanner); break;
+                case "5":
+                    System.out.println("Logged out.");
+                    return;
+                default:
+                    System.out.println("Invalid option.");
+            }
+        }
+    }
 
-		System.out.print("Enter cuisine name to order: ");
-		String cuisineName = scanner.nextLine().trim();
+    public void browseCuisine(Customer customer, Scanner scanner) {
+        System.out.println("Available cuisines:");
+        CuisineService cuisineService = CuisineService.getInstance();
+        List<String> cuisineList = cuisineService.getAllCuisineNames();
 
-		Cuisine cuisine = CuisineService.getInstance().loadCuisine(cuisineName.toLowerCase());
-		if (cuisine == null) {
-			System.out.println("Cuisine not found.");
-			return;
-		}
+        for (int i = 0; i < cuisineList.size(); i++) {
+            System.out.printf("%d. %s\n", i + 1, cuisineList.get(i));
+        }
 
-		List<BaseMenuItem> menuItems = MenuManager.getMenuItems(cuisine);
-		if (menuItems == null || menuItems.isEmpty()) {
-			System.out.println("No items found for this cuisine.");
-			return;
-		}
+        System.out.print("Select cuisine to browse (0 to cancel): ");
+        int choice = Integer.parseInt(scanner.nextLine().trim());
+        if (choice == 0 || choice > cuisineList.size()) {
+            return;
+        }
 
-		System.out.println("\nMenu for " + cuisine.getName() + ":");
-		for (int i = 0; i < menuItems.size(); i++) {
-			System.out.println((i + 1) + ". " + menuItems.get(i));
-		}
+        String selectedCuisine = cuisineList.get(choice - 1);
+        Cuisine cuisine = cuisineService.loadCuisine(selectedCuisine);
+        if (cuisine == null || cuisine.getMenuItems().isEmpty()) {
+            System.out.println("⚠️ No items found in this cuisine.");
+            return;
+        }
 
-		List<BaseMenuItem> selectedItems = new ArrayList<>();
-		while (true) {
-			System.out.print("Enter item number to add (0 to finish): ");
-			int choice = Integer.parseInt(scanner.nextLine());
+        List<BaseMenuItem> items = cuisine.getMenuItems();
+        List<BaseMenuItem> cart = cartMap.getOrDefault(customer, new ArrayList<>());
 
-			if (choice == 0)
-				break;
-			if (choice < 1 || choice > menuItems.size()) {
-				System.out.println("Invalid choice.");
-				continue;
-			}
+        while (true) {
+            System.out.println("\nMenu for " + selectedCuisine + ":");
+            for (int i = 0; i < items.size(); i++) {
+                BaseMenuItem item = items.get(i);
+                System.out.printf("%d. [%s] %s - ₹%.2f | %s\n", i + 1, item.getId(), item.getName(), item.getPrice(), item.getDescription());
+            }
+            System.out.print("Enter item number to add (0 to finish): ");
+            int itemChoice = Integer.parseInt(scanner.nextLine().trim());
+            if (itemChoice == 0) break;
+            if (itemChoice < 1 || itemChoice > items.size()) {
+                System.out.println("Invalid item number.");
+                continue;
+            }
+            cart.add(items.get(itemChoice - 1));
+            System.out.println("Item added to cart.");
+        }
 
-			selectedItems.add(menuItems.get(choice - 1));
-		}
+        cartMap.put(customer, cart);
+    }
 
-		if (selectedItems.isEmpty()) {
-			System.out.println("No items selected.");
-			return;
-		}
+    private void viewEditCart(Customer customer, Scanner scanner) {
+        List<BaseMenuItem> cart = cartMap.getOrDefault(customer, new ArrayList<>());
+        if (cart.isEmpty()) {
+            System.out.println("Cart is empty.");
+            return;
+        }
 
-		double total = selectedItems.stream().mapToDouble(BaseMenuItem::getPrice).sum();
+        System.out.println("Your cart items:");
+        for (int i = 0; i < cart.size(); i++) {
+            BaseMenuItem item = cart.get(i);
+            System.out.printf("%d. %s — ₹%.2f\n", i + 1, item.getName(), item.getPrice());
+        }
 
-		DiscountContext discountContext = new DiscountContext();
-		discountContext.autoSetStrategy(total);
-		double discountedTotal = discountContext.applyDiscount(total);
+        System.out.print("Enter item number to remove (0 to skip): ");
+        int idx = Integer.parseInt(scanner.nextLine());
+        if (idx >= 1 && idx <= cart.size()) {
+            cart.remove(idx - 1);
+            System.out.println("Item removed.");
+        }
+        cartMap.put(customer, cart);
+    }
 
-		DeliveryContext deliveryContext = new DeliveryContext();
-		String partner = deliveryContext.assignRandomPartner();
+    private void checkout(Customer customer, Scanner scanner) {
+        List<BaseMenuItem> cart = cartMap.getOrDefault(customer, new ArrayList<>());
+        if (cart.isEmpty()) {
+            System.out.println("Cart is empty.");
+            return;
+        }
 
-		Order order = new Order(customer, selectedItems, total);
-		order.setAssignedDeliveryPartner(partner);
-		orders.add(order);
+        double totalAmount = calculateCartTotal(cart);
+        double finalAmount = DiscountContext.getInstance().applyAllDiscounts(totalAmount);
+        String partner = new DeliveryContext().assignRandomPartner();
+        String paymentMode = PaymentService.processPayment(scanner, finalAmount);
 
-		DataStore.saveToFile(orders, ORDER_FILE);
+        Order order = new Order(customer, new ArrayList<>(cart), totalAmount);
+        order.setAssignedDeliveryPartner(partner);
+        orders.add(order);
+        DataStore.saveToFile(orders, ORDER_FILE);
 
-		String paymentMode = PaymentService.processPayment(scanner, discountedTotal);
-		InvoicePrinter.printInvoice(order, discountedTotal, paymentMode, partner);
+        InvoicePrinter.printInvoice(order, finalAmount, paymentMode, partner);
+        System.out.println("Order placed successfully!");
 
-		File orderDir = new File("data/orders/");
-		if (!orderDir.exists())
-			orderDir.mkdirs();
-		String orderPath = "data/orders/" + order.getOrderId() + ".ser";
-		DataStore.saveToFile(order, orderPath);
+        cart.clear();
+        cartMap.put(customer, cart);
+    }
 
-		System.out.println("Order placed successfully!");
+    private double calculateCartTotal(List<BaseMenuItem> cart) {
+        return cart.stream().mapToDouble(BaseMenuItem::getPrice).sum();
+    }
 
-		System.out.println("Thank you for shopping with us!");
-		System.exit(0);
+    private void trackOrder(Customer customer) {
+        boolean found = false;
+        for (Order order : orders) {
+            if (order.getCustomer().equals(customer)) {
+                System.out.printf("Order #%s — Status: %s\n", order.getOrderId(), order.getStatus());
+                found = true;
+            }
+        }
+        if (!found) {
+            System.out.println("No orders found.");
+        }
+    }
 
-	}
+//    private void collectFeedback(Customer customer, Scanner scanner) {
+//        System.out.print("✍Enter feedback for your last order: ");
+//        String feedback = scanner.nextLine();
+//        System.out.println("Thanks for your feedback!");
+//    }
 
-	public static void viewAllOrders() {
-		if (orders.isEmpty()) {
-			System.out.println("No orders found.");
-			return;
-		}
-
-		System.out.println("\nAll Orders:");
-		for (Order order : orders) {
-			System.out.println("Order ID: " + order.getOrderId() + ", Customer: " + order.getCustomer().getName()
-					+ ", Total: ₹" + order.getTotalAmount() + ", Status: " + order.getStatus());
-		}
-	}
+    public static void viewAllOrders() {
+        List<Order> all = getInstance().orders;
+        if (all.isEmpty()) {
+            System.out.println("No orders found.");
+            return;
+        }
+        for (Order o : all) {
+            System.out.printf("ID: %s | Customer: %s | ₹%.2f | Status: %s\n",
+                    o.getOrderId(), o.getCustomer().getName(), o.getTotalAmount(), o.getStatus());
+        }
+    }
 }

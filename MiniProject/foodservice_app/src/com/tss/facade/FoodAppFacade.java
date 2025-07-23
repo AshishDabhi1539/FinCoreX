@@ -18,36 +18,30 @@ public class FoodAppFacade {
         this.scanner = scanner;
     }
 
-    public void showMainMenu() {
+    public void startApp() {
         while (true) {
-            System.out.println("\n========= Main Menu =========");
-            System.out.println("1. Admin Login");
-            System.out.println("2. Customer Login");
-            System.out.println("3. New Customer Registration");
-            System.out.println("4. Exit");
-            System.out.print("Enter your choice: ");
-
-            String input = scanner.nextLine();
+            printMainMenu();
+            String input = scanner.nextLine().trim();
             switch (input) {
-                case "1":
-                    handleAdminLogin();
-                    break;
-                case "2":
-                    handleCustomerLogin();
-                    break;
-                case "3":
-                    handleCustomerRegistration();
-                    break;
-                case "4":
-                    System.out.println("Thank you for using TSS Food Ordering App. Exiting...");
-                    return;
-                default:
-                    System.out.println("Invalid choice. Please try again.");
+                case "1" -> adminLoginFlow();
+                case "2" -> customerLoginFlow();
+                case "3" -> customerRegistrationFlow();
+                case "4" -> exitApp();
+                default -> System.out.println("❌ Invalid input. Try again.");
             }
         }
     }
 
-    private void handleAdminLogin() {
+    private void printMainMenu() {
+        System.out.println("\n========= Main Menu =========");
+        System.out.println("1. Admin Login");
+        System.out.println("2. Customer Login");
+        System.out.println("3. New Customer Registration");
+        System.out.println("4. Exit");
+        System.out.print("Enter your choice: ");
+    }
+
+    private void adminLoginFlow() {
         System.out.print("Enter admin username: ");
         String username = scanner.nextLine();
         System.out.print("Enter admin password: ");
@@ -55,15 +49,15 @@ public class FoodAppFacade {
 
         Admin admin = adminService.authenticate(username, password);
         if (admin != null) {
-            System.out.println("Admin login successful!");
+            System.out.println("Admin login successful.");
             AdminPanel adminPanel = new AdminPanel(scanner);
-            adminPanel.showAdminMenu();
+            adminPanel.showAdminMenu(); 
         } else {
             System.out.println("Invalid admin credentials.");
         }
     }
 
-    private void handleCustomerLogin() {
+    private void customerLoginFlow() {
         System.out.print("Enter customer name: ");
         String name = scanner.nextLine();
         System.out.print("Enter password: ");
@@ -72,18 +66,23 @@ public class FoodAppFacade {
         Customer customer = customerService.authenticateCustomer(name, password);
         if (customer != null) {
             System.out.println("Welcome, " + customer.getName() + "!");
-            OrderService.placeOrder(customer, scanner);
+            new OrderService().showCustomerDashboard(customer, scanner); 
         } else {
             System.out.println("Invalid customer credentials.");
         }
     }
 
-    private void handleCustomerRegistration() {
+    private void customerRegistrationFlow() {
         Customer newCustomer = customerService.registerCustomer(scanner);
         if (newCustomer != null) {
-            System.out.println("Registration successful. You can now log in.");
+            System.out.println("✅ Registration successful. You can now log in.");
         } else {
-            System.out.println("Registration failed.");
+            System.out.println("❌ Registration failed.");
         }
+    }
+
+    private void exitApp() {
+        System.out.println("Thank you for using Food Ordering App. Goodbye!");
+        System.exit(0);
     }
 }
