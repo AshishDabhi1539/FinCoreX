@@ -41,7 +41,7 @@ SELECT subject_count(1) AS subjectNumbers;
 SELECT course_count(1) AS coursesNumbers;
 
 -- 7. Get Mobile Number
--- Write a function get_mobile_by_student that takes a student ID and returns their mobile number from the profile table.
+-- Write a function get_mobile_by_student that takes a student get_gradeID and returns their mobile number from the profile table.
 --  
 SELECT get_mobile_by_student(1) AS studentMobileNumber;
 
