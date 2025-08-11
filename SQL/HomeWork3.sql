@@ -69,3 +69,5 @@ SELECT get_top_percentage();
 -- (Use a SELECT with conditional logic)
 
 SELECT get_student_status(1) as studentCondition;
+
+select * from profiles;

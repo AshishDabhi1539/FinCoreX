@@ -1,0 +1,31 @@
+package com.tss.service;
+
+import java.util.List;
+
+import com.tss.dao.UsersDao;
+import com.tss.model.User;
+
+public class UsersService {
+	private UsersDao userDao = new UsersDao();
+
+	public boolean isUserExists(String username) {
+		return userDao.isUserExists(username);
+	}
+
+	public boolean registerUser(String username, String password, String role) {
+		User user = new User(username, password, role, null);
+		return userDao.insertUser(user);
+	}
+
+	public boolean validateCredentials(String username, String password) {
+		return userDao.validateCredentials(username, password);
+	}
+
+	public String getUserRole(String username) {
+		return userDao.getUserRole(username);
+	}
+
+	public List<User> getAllUsers() {
+		return userDao.getAllUsers();
+	}
+}

@@ -10,6 +10,7 @@
 		<item key="isRegEx" value="false"/>
 		<item key="replaceBarOpen" value="true"/>
 		<list key="findhistory">
+			<item value="session.setAttribute(&quot;questionText&quot;, q.getQuestionText());"/>
 			<item value="INSERT INTO students (id ,name, age, percentage, roll_number)"/>
 			<item value="sc"/>
 			<item value="creditScore"/>
