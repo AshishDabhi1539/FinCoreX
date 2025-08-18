@@ -14,7 +14,7 @@ public class DBConnection {
 
 				Class.forName("com.mysql.cj.jdbc.Driver");
 
-				connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/userdb", "root", "Root@123");
+				connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/organization", "root", "Root@123");
 				System.out.println("Connection Successful");
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block

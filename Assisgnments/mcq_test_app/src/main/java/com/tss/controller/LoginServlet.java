@@ -38,12 +38,13 @@ public class LoginServlet extends HttpServlet {
 				response.sendRedirect("question");
 			} else {
 				request.setAttribute("error", "Invalid username or password");
-				request.getRequestDispatcher("login.html").forward(request, response);
+				request.getRequestDispatcher("error.jsp").forward(request, response);
 			}
-		} catch (SQLException e) {
-			request.setAttribute("error", "Login failed: " + e.getMessage());
-			request.getRequestDispatcher("login.html").forward(request, response);
+		} 		 catch (Exception e) {
+		    request.setAttribute("javax.servlet.error.exception", e);
+		    request.getRequestDispatcher("error.jsp").forward(request, response);
 		}
+
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)

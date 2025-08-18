@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mascot Navbar</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: #0b1220;
+      color: white;
+      text-align: center;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      padding: 20px;
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(10px);
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      padding: 10px;
+      transition: transform 0.2s ease;
+    }
+
+    .nav-item img.mascot {
+      height: 60px;
+      animation: bounce 1.5s infinite ease-in-out;
+    }
+
+    .nav-item span {
+      margin-top: 6px;
+      font-size: 14px;
+    }
+
+    .nav-item.active {
+      transform: scale(1.1);
+    }
+
+    .nav-item:hover {
+      transform: translateY(-5px);
+    }
+
+    /* Continuous bounce animation */
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      25% { transform: translateY(-6px) rotate(-3deg); }
+      50% { transform: translateY(0) rotate(0deg); }
+      75% { transform: translateY(-6px) rotate(3deg); }
+    }
+
+    main {
+      padding: 30px;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-item active" data-tab="dogs">
+    <img src="dog.png" alt="Dog" class="mascot">
+    <span>Dogs</span>
+  </div>
+  <div class="nav-item" data-tab="cats">
+    <img src="cat.png" alt="Cat" class="mascot">
+    <span>Cats</span>
+  </div>
+  <div class="nav-item" data-tab="crab">
+    <img src="crab.png" alt="Crab" class="mascot">
+    <span>Crab</span>
+  </div>
+</nav>
+
+<main id="content">
+  <h1>Dogs Section</h1>
+  <p>Welcome to the dogs page!</p>
+</main>
+
+<script>
+  const navItems = document.querySelectorAll('.nav-item');
+  const content = document.getElementById('content');
+
+  navItems.forEach(item => {
+    item.addEventListener('click', () => {
+      navItems.forEach(i => i.classList.remove('active'));
+      item.classList.add('active');
+
+      const tab = item.dataset.tab;
+      if (tab === 'dogs') {
+        content.innerHTML = '<h1>Dogs Section</h1><p>Welcome to the dogs page!</p>';
+      } else if (tab === 'cats') {
+        content.innerHTML = '<h1>Cats Section</h1><p>Welcome to the cats page!</p>';
+      } else if (tab === 'crab') {
+        content.innerHTML = '<h1>Crab Section</h1><p>Welcome to the crab page!</p>';
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

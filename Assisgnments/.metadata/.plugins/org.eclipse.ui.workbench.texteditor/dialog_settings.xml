@@ -10,6 +10,12 @@
 		<item key="isRegEx" value="false"/>
 		<item key="replaceBarOpen" value="true"/>
 		<list key="findhistory">
+			<item value="html"/>
+			<item value="form"/>
+			<item value="&lt;a href=&quot;${pageContext.request.contextPath}/employee/applyLeave.jsp&quot;&gt;Apply Leave&lt;/a&gt;"/>
+			<item value="apply"/>
+			<item value="/leave_app/employee/dashboard"/>
+			<item value="login.jsp"/>
 			<item value="session.setAttribute(&quot;questionText&quot;, q.getQuestionText());"/>
 			<item value="INSERT INTO students (id ,name, age, percentage, roll_number)"/>
 			<item value="sc"/>
@@ -19,11 +25,6 @@
 			<item value="name"/>
 			<item value="songList"/>
 			<item value="equals"/>
-			<item value="hash"/>
-			<item value="alice"/>
-			<item value="generateId"/>
-			<item value="rn"/>
-			<item value="random"/>
 		</list>
 		<list key="replacehistory">
 			<item value="scanner"/>

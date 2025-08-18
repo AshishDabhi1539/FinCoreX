@@ -78,4 +78,19 @@ public class Question {
 	public void setCorrectOption(int correctOption) {
 		this.correctOption = correctOption;
 	}
+	
+	public String getOptionByNumber(int optionNumber) {
+	    switch (optionNumber) {
+	        case 1: return option1;
+	        case 2: return option2;
+	        case 3: return option3;
+	        case 4: return option4;
+	        default: return "Invalid Option";
+	    }
+	}
+
+	public String getAnswer() {
+	    return getOptionByNumber(correctOption);
+	}
+
 }

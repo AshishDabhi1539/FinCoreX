@@ -30,10 +30,10 @@ public class RegisterServlet extends HttpServlet {
 
 		try {
 			userDAO.registerUser(new User(0, username, password, email));
-			response.sendRedirect("login.html");
+			response.sendRedirect("login.jsp");
 		} catch (SQLException e) {
 			request.setAttribute("error", "Registration failed: " + e.getMessage());
-			request.getRequestDispatcher("register.html").forward(request, response);
+			request.getRequestDispatcher("register.jsp").forward(request, response);
 		}
 	}
 
