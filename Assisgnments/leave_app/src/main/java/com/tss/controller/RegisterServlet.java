@@ -8,50 +8,33 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.tss.dao.EmployeeDao;
-import com.tss.dao.LeaveBalanceDao;
-import com.tss.model.Employee;
+import com.tss.dao.UserDAO;
+import com.tss.model.User;
 
-@WebServlet("/register")
+@WebServlet("/registration")
 public class RegisterServlet extends HttpServlet {
-    private EmployeeDao empDao = new EmployeeDao();
-    private LeaveBalanceDao lbDao = new LeaveBalanceDao();
-    private static final int DEFAULT_LEAVES = 20;
+    private UserDAO userDAO = new UserDAO();
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("register.jsp").forward(req, resp);
-    }
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String name = req.getParameter("name");
-        String username = req.getParameter("username");
-        String password = req.getParameter("password");
-        // role default EMPLOYEE
-        String role = "EMPLOYEE";
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        String email = request.getParameter("email");
 
-        // TODO: Validate inputs, check username uniqueness (simple attempt here)
-        Employee existing = empDao.findByUsernameAndPassword(username, password); // not ideal for check but quick
-        // Better: add a findByUsername() method. For demo, we check username uniqueness simply:
-        // We'll try to create and catch unique constraint exception instead.
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setEmail(email);
+        user.setRole("employee"); // default
 
-        Employee e = new Employee();
-        e.setName(name);
-        e.setUsername(username);
-        e.setPassword(password); // << plain text here. Hash in production.
-        e.setRole(role);
-        e.setTotalLeaves(DEFAULT_LEAVES);
-        e.setLeavesTaken(0);
+        boolean success = userDAO.registerUser(user);
 
-        int newId = empDao.create(e);
-        if (newId > 0) {
-            // insert initial snapshot in leave_balance
-            lbDao.insertInitialBalance(newId, DEFAULT_LEAVES, 0, DEFAULT_LEAVES);
-            resp.sendRedirect(req.getContextPath() + "/login");
+        if (success) {
+            response.sendRedirect("register.jsp?m=Registration successful! Please login.");
         } else {
-            req.setAttribute("error", "Could not register user (username may already exist).");
-            req.getRequestDispatcher("register.jsp").forward(req, resp);
+            response.sendRedirect("register.jsp?e=Registration failed. Try again.");
         }
     }
 }

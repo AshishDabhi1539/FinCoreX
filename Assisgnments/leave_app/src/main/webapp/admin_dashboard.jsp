@@ -1,169 +1,215 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="java.util.List" %>
+<%@ page import="com.tss.model.LeaveRequest" %>
+
+<%
+    List<LeaveRequest> leaves = (List<LeaveRequest>) request.getAttribute("leaves");
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8"/>
-<title>Admin Dashboard</title>
-<style>
-  body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #1f1f2e, #2e2e44);
-    color: #fff;
+    <meta charset="UTF-8">
+    <title>Admin Dashboard - Leave Requests</title>
+    <style>
+    body {
+    font-family: Arial, sans-serif;
+    background: #f4f7fa;
     margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 90%;
+    margin: 20px auto;
+    background: #fff;
     padding: 20px;
-    min-height: 100vh;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
+    border-radius: 8px;
+    box-shadow: 0 0 10px #ccc;
+}
 
-  h2 {
-    margin-bottom: 20px;
-    color: #00f2fe;
-    text-shadow: 0 0 8px #4facfe;
-    user-select: none;
-  }
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
-  table {
+h2 {
+    color: #333;
+    margin: 0;
+}
+
+.logout-btn {
+    background: #d9534f;
+    border: none;
+    padding: 8px 15px;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.logout-btn:hover {
+    background: #c9302c;
+}
+
+.filter-form {
+    margin: 20px 0;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.filter-form input,
+.filter-form select,
+.filter-form button {
+    padding: 6px;
+    font-size: 14px;
+}
+
+.filter-form button {
+    background: #0275d8;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.filter-form button:hover {
+    background: #025aa5;
+}
+
+.leave-table {
     width: 100%;
     border-collapse: collapse;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-    margin-top: 15px;
-    backdrop-filter: blur(8px);
-  }
+    margin-top: 20px;
+}
 
-  th, td {
-    padding: 14px 12px;
+.leave-table th,
+.leave-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
     text-align: center;
-    font-size: 14px;
-    color: #e0e0e0;
-    user-select: text;
-  }
+}
 
-  th {
-    background: rgba(0, 242, 254, 0.8);
-    color: #0f0f0f;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
+.leave-table th {
+    background: #0275d8;
+    color: #fff;
+}
 
-  tr:hover td {
-    background: rgba(0, 242, 254, 0.15);
-    color: #00f2fe;
-    transition: background 0.25s ease;
-  }
-
-  tr:last-child td {
-    border-bottom: none;
-  }
-
-  .approve, .reject {
-    padding: 8px 12px;
+.approve-btn {
+    background: #5cb85c;
+    color: white;
     border: none;
-    border-radius: 8px;
-    font-weight: 600;
+    padding: 5px 10px;
     cursor: pointer;
-    transition: all 0.3s ease;
-  }
+    border-radius: 4px;
+}
+.approve-btn:hover {
+    background: #449d44;
+}
 
-  .approve {
-    background: linear-gradient(135deg, #28a745, #1c7c31);
-    color: #fff;
-  }
-  .approve:hover {
-    background: linear-gradient(135deg, #1c7c31, #138a24);
-    box-shadow: 0 0 12px #28a745aa;
-  }
+.reject-btn {
+    background: #d9534f;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+.reject-btn:hover {
+    background: #c9302c;
+}
 
-  .reject {
-    background: linear-gradient(135deg, #dc3545, #a71d2a);
-    color: #fff;
-    margin-left: 8px;
-  }
-  .reject:hover {
-    background: linear-gradient(135deg, #a71d2a, #7a151f);
-    box-shadow: 0 0 12px #dc3545aa;
-  }
+.no-action {
+    color: #777;
+}
 
-  /* Fixed Logout button */
-  .logout-fixed {
-    position: fixed;
-    top: 16px;
-    right: 16px;
-    background: linear-gradient(135deg, #dc3545, #a71d2a);
-    color: #fff;
-    padding: 10px 18px;
-    border-radius: 12px;
-    font-weight: 700;
-    text-decoration: none;
-    box-shadow: 0 6px 15px rgba(220,53,69,0.5);
-    transition: all 0.3s ease;
-    font-size: 14px;
-    z-index: 1000;
-    user-select: none;
-  }
+.no-records {
+    text-align: center;
+    color: #999;
+    font-style: italic;
+}
 
-  .logout-fixed:hover {
-    background: linear-gradient(135deg, #a71d2a, #7a151f);
-    box-shadow: 0 0 18px #dc3545aa;
-  }
-
-  @media (max-width: 600px) {
-    table, th, td {
-      font-size: 12px;
-      padding: 10px 8px;
-    }
-    .approve, .reject {
-      padding: 6px 8px;
-      font-size: 12px;
-    }
-    .logout-fixed {
-      padding: 8px 14px;
-      font-size: 12px;
-    }
-  }
-</style>
+td.pending {
+    color: orange;
+    font-weight: bold;
+}
+td.approved {
+    color: green;
+    font-weight: bold;
+}
+td.rejected {
+    color: red;
+    font-weight: bold;
+}
+    
+    </style>
 </head>
 <body>
+<div class="container">
+    <div class="header">
+        <h2>Admin Dashboard - Leave Requests</h2>
+        <form action="<%=request.getContextPath()%>/logout" method="get">
+            <button type="submit" class="logout-btn">Logout</button>
+        </form>
+    </div>
 
-  <a class="logout-fixed" href="${pageContext.request.contextPath}/logout">Logout</a>
+    <!-- Filter Form -->
+    <form method="get" action="<%=request.getContextPath()%>/admin/dashboard" class="filter-form">
+        <label>From:</label>
+        <input type="date" name="fromDate"/>
+        <label>To:</label>
+        <input type="date" name="toDate"/>
+        <label>Status:</label>
+        <select name="status">
+            <option value="">All</option>
+            <option value="PENDING">Pending</option>
+            <option value="APPROVED">Approved</option>
+            <option value="REJECTED">Rejected</option>
+        </select>
+        <button type="submit">Filter</button>
+    </form>
 
-  <h2>Admin - Pending Requests</h2>
-
-  <table>
-    <tr>
-      <th>ID</th>
-      <th>Emp ID</th>
-      <th>Start</th>
-      <th>End</th>
-      <th>Reason</th>
-      <th>Applied On</th>
-      <th>Action</th>
-    </tr>
-    <c:forEach var="r" items="${leaveRequests}">
-      <tr>
-        <td>${r.leaveId}</td>
-        <td>${r.empId}</td>
-        <td>${r.startDate}</td>
-        <td>${r.endDate}</td>
-        <td>${r.reason}</td>
-        <td>${r.appliedOn}</td>
-        <td>
-          <form action="${pageContext.request.contextPath}/admin/action" method="post" style="display:inline">
-            <input type="hidden" name="leaveId" value="${r.leaveId}"/>
-            <button class="approve" name="action" value="APPROVE">Approve</button>
-          </form>
-          <form action="${pageContext.request.contextPath}/admin/action" method="post" style="display:inline">
-            <input type="hidden" name="leaveId" value="${r.leaveId}"/>
-            <button class="reject" name="action" value="REJECT">Reject</button>
-          </form>
-        </td>
-      </tr>
-    </c:forEach>
-  </table>
-
+    <!-- Leave Requests Table -->
+    <table class="leave-table">
+        <tr>
+            <th>ID</th>
+            <th>User</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Reason</th>
+            <th>Admin Action</th>
+        </tr>
+        <%
+            if (leaves != null && !leaves.isEmpty()) {
+                for (LeaveRequest l : leaves) {
+        %>
+        <tr>
+            <td><%= l.getId() %></td>
+            <td><%= l.getUserId() %></td>
+            <td><%= l.getLeaveDate() %></td>
+            <td class="<%= l.getStatus().toLowerCase() %>"><%= l.getStatus() %></td>
+            <td><%= l.getReason() %></td>
+            <td>
+                <% if ("PENDING".equals(l.getStatus())) { %>
+                    <form action="<%= request.getContextPath() %>/admin/leaveAction" method="post" class="action-form">
+                        <input type="hidden" name="leaveId" value="<%= l.getId() %>"/>
+                        <button type="submit" name="action" value="APPROVE" class="approve-btn">Approve</button>
+                        <button type="submit" name="action" value="REJECT" class="reject-btn">Reject</button>
+                    </form>
+                <% } else { %>
+                    <span class="no-action">-</span>
+                <% } %>
+            </td>
+        </tr>
+        <%
+                }
+            } else {
+        %>
+        <tr>
+            <td colspan="6" class="no-records">No leave requests found</td>
+        </tr>
+        <% } %>
+    </table>
+</div>
 </body>
 </html>

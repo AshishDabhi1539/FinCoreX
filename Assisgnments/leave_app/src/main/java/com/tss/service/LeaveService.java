@@ -1,89 +1,65 @@
 package com.tss.service;
 
-import com.tss.dao.EmployeeDao;
-import com.tss.dao.LeaveRequestDao;
-import com.tss.dao.LeaveBalanceDao;
-import com.tss.model.Employee;
+import java.time.LocalDate;
+import java.util.List;
+
+import com.tss.dao.LeaveDAO;
 import com.tss.model.LeaveRequest;
 
-import java.sql.Date;
-import java.time.temporal.ChronoUnit;
-
 public class LeaveService {
-    private LeaveRequestDao lrDao = new LeaveRequestDao();
-    private EmployeeDao empDao = new EmployeeDao();
-    private LeaveBalanceDao lbDao = new LeaveBalanceDao();
+    private final LeaveDAO leaveDAO = new LeaveDAO();
+    private static final int MAX_LEAVES_PER_MONTH = 3;
 
-    /**
-     * Apply leave: validate balance and create request (status = PENDING).
-     */
-    public String applyLeave(int empId, Date start, Date end, String reason) {
-        Employee emp = empDao.findById(empId);
-        if (emp == null) return "Employee not found";
+    public String applyLeave(int userId, LocalDate date, String reason) throws Exception {
+        if (date == null || reason == null || reason.isBlank())
+            return "Please provide a valid date and reason.";
 
-        long days = ChronoUnit.DAYS.between(start.toLocalDate(), end.toLocalDate()) + 1;
-        if (days <= 0) return "Invalid date range";
+        if (date.isBefore(LocalDate.now()))
+            return "Past dates are not allowed.";
 
-        int available = emp.getTotalLeaves() - emp.getLeavesTaken();
-        if (days > available) {
-            return "Insufficient leave balance. Available: " + available;
-        }
+        if (leaveDAO.existsPendingOrApprovedOnDate(userId, date))
+            return "You already have a leave for this date.";
+
+        int count = leaveDAO.countMonthLeavesPendingOrApproved(userId, date.getYear(), date.getMonthValue());
+        if (count >= MAX_LEAVES_PER_MONTH)
+            return "Monthly limit reached (max 3).";
 
         LeaveRequest lr = new LeaveRequest();
-        lr.setEmpId(empId);
-        lr.setStartDate(start);
-        lr.setEndDate(end);
+        lr.setUserId(userId);
+        lr.setLeaveDate(date);
         lr.setReason(reason);
-        lr.setStatus("PENDING");
-
-        boolean ok = lrDao.create(lr);
-        return ok ? "SUCCESS" : "Error creating leave request";
+        leaveDAO.insert(lr);
+        return "OK";
     }
 
-    /**
-     * Approve request: mark request APPROVED, update employees.leaves_taken and update leave_balance snapshot.
-     */
-    public boolean approveLeave(int leaveId) {
-        LeaveRequest lr = lrDao.findById(leaveId);
-        if (lr == null) return false;
+    public String updatePendingLeave(int leaveId, int userId, LocalDate newDate, String newReason) throws Exception {
+        if (newDate.isBefore(LocalDate.now()))
+            return "Past dates are not allowed.";
 
-        // compute days
-        long days = ChronoUnit.DAYS.between(lr.getStartDate().toLocalDate(), lr.getEndDate().toLocalDate()) + 1;
-        if (days <= 0) return false;
+        if (leaveDAO.existsPendingOrApprovedOnDate(userId, newDate))
+            return "You already have a leave for this date.";
 
-        Employee emp = empDao.findById(lr.getEmpId());
-        if (emp == null) return false;
+        int count = leaveDAO.countMonthLeavesPendingOrApproved(userId, newDate.getYear(), newDate.getMonthValue());
+        if (count >= MAX_LEAVES_PER_MONTH)
+            return "Monthly limit reached (max 3).";
 
-        int newLeavesTaken = emp.getLeavesTaken() + (int) days;
-        boolean updatedEmp = empDao.updateLeavesTaken(emp.getEmpId(), newLeavesTaken);
-        boolean updatedReq = lrDao.updateStatus(leaveId, "APPROVED");
-
-        if (updatedEmp && updatedReq) {
-            int remaining = emp.getTotalLeaves() - newLeavesTaken;
-            lbDao.updatebalance(emp.getEmpId(), emp.getTotalLeaves(), newLeavesTaken, remaining);
-            return true;
-        } else {
-            // If partially updated, you may want to roll back in production. Here we return false.
-            return false;
-        }
+        leaveDAO.updatePendingLeave(leaveId, newDate, newReason);
+        return "OK";
+    }
+    
+    public List<LeaveRequest> getLeavesByDateRange(String from, String to, String status) {
+        return leaveDAO.findByDateRange(from, to, status);
     }
 
-    /**
-     * Reject request: mark request REJECTED and update balance snapshot (no leaves changed)
-     */
-    public boolean rejectLeave(int leaveId) {
-        LeaveRequest lr = lrDao.findById(leaveId);
-        if (lr == null) return false;
-        Employee emp = empDao.findById(lr.getEmpId());
-        if (emp == null) return false;
-
-        boolean updatedReq = lrDao.updateStatus(leaveId, "REJECTED");
-        if (updatedReq) {
-            // snapshot (no changes in leaves_taken)
-            int remaining = emp.getTotalLeaves() - emp.getLeavesTaken();
-            lbDao.updatebalance(emp.getEmpId(), emp.getTotalLeaves(), emp.getLeavesTaken(), remaining);
-            return true;
-        }
-        return false;
+    public List<LeaveRequest> getLeavesByStatus(String status) {
+        return leaveDAO.findByStatus(status);
     }
+
+    public List<LeaveRequest> getAllLeaves() {
+        return leaveDAO.findAll();
+    }
+
+    
+
+
 }

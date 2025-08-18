@@ -1,40 +1,88 @@
 package com.tss.model;
 
-import java.sql.Date;
-import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class LeaveRequest {
-    private int leaveId;
-    private int empId;
-    private String empName;     // NEW FIELD
-    private Date startDate;
-    private Date endDate;
-    private String reason;
-    private String status;
-    private Timestamp appliedOn;
+	private int id;
+	private int userId;
+	private LocalDate leaveDate;
+	private String status; // PENDING / APPROVED / REJECTED
+	private String reason;
+	private String rejectionReason;
+	private LocalDateTime createdAt;
+	private LocalDateTime updatedAt;
+	private String adminReason;
 
-    // getters/setters
-    public int getLeaveId() { return leaveId; }
-    public void setLeaveId(int leaveId) { this.leaveId = leaveId; }
+	public String getAdminReason() {
+		return adminReason;
+	}
 
-    public int getEmpId() { return empId; }
-    public void setEmpId(int empId) { this.empId = empId; }
+	public void setAdminReason(String adminReason) {
+		this.adminReason = adminReason;
+	}
 
-    public String getEmpName() { return empName; }
-    public void setEmpName(String empName) { this.empName = empName; }
+	public int getId() {
+		return id;
+	}
 
-    public Date getStartDate() { return startDate; }
-    public void setStartDate(Date startDate) { this.startDate = startDate; }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    public Date getEndDate() { return endDate; }
-    public void setEndDate(Date endDate) { this.endDate = endDate; }
+	public int getUserId() {
+		return userId;
+	}
 
-    public String getReason() { return reason; }
-    public void setReason(String reason) { this.reason = reason; }
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
 
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
+	public LocalDate getLeaveDate() {
+		return leaveDate;
+	}
 
-    public Timestamp getAppliedOn() { return appliedOn; }
-    public void setAppliedOn(Timestamp appliedOn) { this.appliedOn = appliedOn; }
+	public void setLeaveDate(LocalDate leaveDate) {
+		this.leaveDate = leaveDate;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getReason() {
+		return reason;
+	}
+
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
+
+	public String getRejectionReason() {
+		return rejectionReason;
+	}
+
+	public void setRejectionReason(String rejectionReason) {
+		this.rejectionReason = rejectionReason;
+	}
+
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public LocalDateTime getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(LocalDateTime updatedAt) {
+		this.updatedAt = updatedAt;
+	}
 }
