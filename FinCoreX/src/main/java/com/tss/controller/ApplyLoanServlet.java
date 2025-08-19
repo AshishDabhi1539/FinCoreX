@@ -12,12 +12,14 @@ import com.tss.model.Loan;
 import com.tss.model.User;
 import com.tss.service.LoanService;
 import com.tss.service.AccountService;
+import com.tss.dao.LoanTypeDAO;
 
 @WebServlet("/apply_loan")
 public class ApplyLoanServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private final LoanService loanService = new LoanService();
 	private final AccountService accountService = new AccountService();
+	private final LoanTypeDAO loanTypeDAO = new LoanTypeDAO();
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -26,6 +28,7 @@ public class ApplyLoanServlet extends HttpServlet {
 		if (user != null) {
 			request.setAttribute("accounts", accountService.getUserAccounts(user.getUserId()));
 		}
+		request.setAttribute("loanTypes", loanTypeDAO.getActiveLoanTypes());
 		request.getRequestDispatcher("/customer/apply_loan.jsp").forward(request, response);
 	}
 
