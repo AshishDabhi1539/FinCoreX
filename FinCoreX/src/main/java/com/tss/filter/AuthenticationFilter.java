@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@WebFilter({ "/customer/*", "/admin/*" })
+@WebFilter({ "/customer/*", "/admin/*", "/loan_approval", "/manage_customers", "/reports", "/manage_accounts", "/view_accounts", "/apply_loan", "/transfer_money", "/transaction_history", "/account_statement", "/deposit", "/withdraw" })
 public class AuthenticationFilter implements Filter {
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
 			throws IOException, ServletException {

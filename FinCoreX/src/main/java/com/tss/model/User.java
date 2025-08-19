@@ -14,6 +14,9 @@ public class User {
 	// 🔑 Add this field
 	private String passwordHash;
 
+	// Transient aggregate for views
+	private int accountCount;
+
 	// No-arg constructor
 	public User() {
 	}
@@ -95,5 +98,13 @@ public class User {
 
 	public void setPasswordHash(String passwordHash) {
 		this.passwordHash = passwordHash;
+	}
+
+	public int getAccountCount() {
+		return accountCount;
+	}
+
+	public void setAccountCount(int accountCount) {
+		this.accountCount = accountCount;
 	}
 }

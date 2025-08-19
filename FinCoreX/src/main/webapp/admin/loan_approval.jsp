@@ -49,17 +49,17 @@
                         <ul class="nav nav-tabs mb-3" id="loanTabs" role="tablist">
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link active" id="pending-tab" data-bs-toggle="tab" data-bs-target="#pending" type="button">
-                                    <i class="fas fa-clock me-2"></i>Pending (15)
+                                    <i class="fas fa-clock me-2"></i>Pending
                                 </button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="approved-tab" data-bs-toggle="tab" data-bs-target="#approved" type="button">
-                                    <i class="fas fa-check me-2"></i>Approved (45)
+                                    <i class="fas fa-check me-2"></i>Approved
                                 </button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="rejected-tab" data-bs-toggle="tab" data-bs-target="#rejected" type="button">
-                                    <i class="fas fa-times me-2"></i>Rejected (12)
+                                    <i class="fas fa-times me-2"></i>Rejected
                                 </button>
                             </li>
                         </ul>
@@ -81,18 +81,59 @@
                                         </thead>
                                         <tbody>
                                             <c:forEach var="l" items="${loans}">
+                                                <c:if test="${l.approvalStatus == 'Pending'}">
+                                                <tr>
+                                                    <td>${l.loanId}</td>
+                                                    <td>
+                                                        <div>
+                                                            <strong>User ID: ${l.userId}</strong><br>
+                                                            <small class="text-muted">ID: ${l.userId}</small>
+                                                        </div>
+                                                    </td>
+                                                    <td><span class="badge bg-info">${l.loanType}</span></td>
+                                                    <td><strong>₹${l.amountRequested}</strong></td>
+                                                    <td>${l.applicationDate}</td>
+                                                    <td>
+                                                        <form method="post" style="display:inline;">
+                                                            <input type="hidden" name="loanId" value="${l.loanId}">
+                                                            <button name="action" value="approve" class="btn btn-success btn-sm">
+                                                                <i class="fas fa-check me-1"></i>Approve
+                                                            </button>
+                                                            <button name="action" value="reject" class="btn btn-danger btn-sm">
+                                                                <i class="fas fa-times me-1"></i>Reject
+                                                            </button>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                                </c:if>
+                                            </c:forEach>
+                            <div class="tab-pane fade" id="approved" role="tabpanel">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead class="table-dark">
+                                            <tr>
+                                                <th>Loan ID</th>
+                                                <th>Customer</th>
+                                                <th>Type</th>
+                                                <th>Amount</th>
+                                                <th>Approved</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach var="l" items="${loans}">
                                                 <c:if test="${l.approvalStatus == 'Approved'}">
                                                 <tr>
                                                     <td>${l.loanId}</td>
                                                     <td>
                                                         <div>
-                                                            <strong>${l.customerName}</strong><br>
+                                                            <strong>User ID: ${l.userId}</strong><br>
                                                             <small class="text-muted">ID: ${l.userId}</small>
                                                         </div>
                                                     </td>
                                                     <td><span class="badge bg-info">${l.loanType}</span></td>
                                                     <td><strong>₹${l.amountApproved}</strong></td>
-                                                    <td>${l.approvalDate}</td>
+                                                    <td>${l.applicationDate}</td>
                                                     <td>
                                                         <form method="post" style="display:inline;">
                                                             <input type="hidden" name="loanId" value="${l.loanId}">
@@ -104,6 +145,10 @@
                                                 </tr>
                                                 </c:if>
                                             </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                                         </tbody>
                                     </table>
                                 </div>
@@ -129,14 +174,14 @@
                                                     <td>${l.loanId}</td>
                                                     <td>
                                                         <div>
-                                                            <strong>${l.customerName}</strong><br>
+                                                            <strong>User ID: ${l.userId}</strong><br>
                                                             <small class="text-muted">ID: ${l.userId}</small>
                                                         </div>
                                                     </td>
                                                     <td><span class="badge bg-secondary">${l.loanType}</span></td>
                                                     <td>₹${l.amountRequested}</td>
-                                                    <td>${l.rejectionDate}</td>
-                                                    <td><small class="text-muted">Insufficient credit history</small></td>
+                                                    <td>${l.applicationDate}</td>
+                                                    <td><small class="text-muted">N/A</small></td>
                                                 </tr>
                                                 </c:if>
                                             </c:forEach>

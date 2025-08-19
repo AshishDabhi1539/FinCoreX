@@ -75,7 +75,9 @@ public class LoanDAO {
 	}
 
 	public void updateLoanStatus(int loanId, String status, Integer approvedBy) {
-		String sql = "UPDATE loans SET approval_status = ?, approved_by = ?, disbursement_date = CASE WHEN ? = 'Disbursed' THEN NOW() ELSE NULL END WHERE loan_id = ?";
+		String sql = "UPDATE loans SET approval_status = ?, approved_by = ?, "
+				+ "disbursement_date = CASE WHEN ? = 'Disbursed' THEN NOW() ELSE disbursement_date END "
+				+ "WHERE loan_id = ?";
 		try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 			ps.setString(1, status);
 			ps.setObject(2, approvedBy);
@@ -84,6 +86,26 @@ public class LoanDAO {
 			ps.executeUpdate();
 		} catch (SQLException e) {
 			throw new ApplicationException("Error updating loan status", e);
+		}
+	}
+
+	public void insertLoanApplication(Loan loan) {
+		String sql = "INSERT INTO loans (user_id, account_id, loan_type, amount_requested, amount_approved, interest_rate, term_months, application_date, approval_status, approved_by, disbursement_date, created_at) "
+				+ "VALUES (?, ?, ?, ?, 0.00, ?, ?, NOW(), 'Pending', NULL, NULL, NOW())";
+		try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+			ps.setInt(1, loan.getUserId());
+			if (loan.getAccountId() == null) {
+				ps.setNull(2, java.sql.Types.INTEGER);
+			} else {
+				ps.setInt(2, loan.getAccountId());
+			}
+			ps.setString(3, loan.getLoanType());
+			ps.setDouble(4, loan.getAmountRequested());
+			ps.setDouble(5, loan.getInterestRate());
+			ps.setInt(6, loan.getTermMonths());
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			throw new ApplicationException("Error submitting loan application", e);
 		}
 	}
 }
