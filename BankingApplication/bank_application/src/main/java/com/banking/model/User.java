@@ -18,7 +18,7 @@ public class User {
 	private String accountType;
 	private double deposit;
 	private String role = "CUSTOMER"; // default
-	private String status = "ACTIVE"; // default
+	private String status = "PENDING"; // default
 	private LocalDateTime lastLogin;
 
 	// Getters & Setters

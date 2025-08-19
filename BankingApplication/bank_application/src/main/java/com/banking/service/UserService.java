@@ -1,11 +1,11 @@
 package com.banking.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.banking.dao.UserDao;
 import com.banking.model.User;
 import com.banking.util.ValidationUtil;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class UserService {
 	private UserDao userDao = new UserDao();
@@ -44,6 +44,8 @@ public class UserService {
 		if (!ValidationUtil.doPasswordsMatch(user.getPasswordHash(), confirmPassword))
 			errors.add("Passwords do not match.");
 
+		
+
 		if (errors.isEmpty()) {
 			boolean saved = userDao.saveUser(user);
 			if (!saved)
@@ -51,6 +53,14 @@ public class UserService {
 		}
 
 		return errors;
+	}
+
+	public List<User> getPendingUsers() {
+	    return userDao.getUsersByStatus("PENDING");
+	}
+
+	public void updateUserStatus(long userId, String status) {
+	    userDao.updateUserStatus(userId, status);
 	}
 
 	public User login(String username, String password) {

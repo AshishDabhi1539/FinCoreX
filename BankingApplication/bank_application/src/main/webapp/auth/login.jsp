@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -115,10 +116,10 @@
     </style>
 </head>
 <body>
-    <div class="login">
+    <div class="${pageContext.request.contextPath}/login">
         <div class="login-container">
             <h2>🔒 Secure Login</h2>
-            <form action="LoginServlet" method="post">
+            <form action="${pageContext.request.contextPath}/login" method="post">
                 <input type="text" name="username" placeholder="Enter Username" required>
                 <input type="password" name="password" placeholder="Enter Password" required>
                 <button type="submit">Login</button>
@@ -126,6 +127,12 @@
             <div class="links">
                 <p><a href="#">Forgot Password?</a> | <a href="register.jsp">New User? Register</a></p>
             </div>
+            <c:if test="${param.error == '1'}">
+    <div style="color:red; margin-bottom:10px;">
+        Invalid username or password!
+    </div>
+</c:if>
+            
         </div>
     </div>
 </body>

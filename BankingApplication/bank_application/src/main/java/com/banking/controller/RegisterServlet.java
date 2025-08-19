@@ -22,8 +22,8 @@ public class RegisterServlet extends HttpServlet {
         req.getRequestDispatcher("/auth/register.jsp").forward(req, resp);
     }
 
-    // Handle POST request to process registration
     @Override
+    
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
@@ -40,18 +40,22 @@ public class RegisterServlet extends HttpServlet {
         user.setAccountType(req.getParameter("accountType"));
         user.setDeposit(Double.parseDouble(req.getParameter("deposit")));
         user.setPasswordHash(req.getParameter("password"));
+        user.setRole("CUSTOMER");   // ensure customer role
+        user.setStatus("PENDING");  // pending approval
 
         String confirmPassword = req.getParameter("confirmPassword");
 
-        // Validate and register the user
         List<String> errors = userService.validateAndRegister(user, confirmPassword);
 
         if (errors.isEmpty()) {
-            req.setAttribute("success", "Registration successful! Please login.");
+            req.setAttribute("success", "Registration submitted! Await admin approval.");
             req.getRequestDispatcher("/auth/login.jsp").forward(req, resp);
         } else {
             req.setAttribute("errors", errors);
             req.getRequestDispatcher("/auth/register.jsp").forward(req, resp);
         }
+        
+        
     }
+
 }

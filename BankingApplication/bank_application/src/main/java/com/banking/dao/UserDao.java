@@ -1,8 +1,15 @@
 package com.banking.dao;
 
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.banking.db.DBConnection;
 import com.banking.model.User;
-import java.sql.*;
 
 public class UserDao {
 
@@ -98,4 +105,52 @@ public class UserDao {
 		}
 		return null;
 	}
+	public List<User> getUsersByStatus(String status) {
+	    List<User> list = new ArrayList<>();
+	    String sql = "SELECT * FROM users WHERE status=?";
+	    try (Connection conn = DBConnection.getConnection();
+	         PreparedStatement ps = conn.prepareStatement(sql)) {
+	        ps.setString(1, status);
+	        ResultSet rs = ps.executeQuery();
+	        while (rs.next()) {
+	            User user = mapResultSetToUser(rs);
+	            list.add(user);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return list;
+	}
+
+	private User mapResultSetToUser(ResultSet rs) throws SQLException {
+	    User user = new User();
+	    user.setUserId(rs.getLong("user_id"));
+	    user.setFullName(rs.getString("full_name"));
+	    user.setUsername(rs.getString("username"));
+	    user.setEmail(rs.getString("email"));
+	    user.setPhone(rs.getString("phone"));
+	    user.setDob(rs.getDate("dob").toLocalDate());
+	    user.setGender(rs.getString("gender"));
+	    user.setAddress(rs.getString("address"));
+	    user.setAadhaar(rs.getString("aadhaar"));
+	    user.setPan(rs.getString("pan"));
+	    user.setAccountType(rs.getString("account_type"));
+	    user.setDeposit(rs.getDouble("deposit"));
+	    user.setRole(rs.getString("role"));
+	    user.setStatus(rs.getString("status"));
+	    return user;
+	}
+
+	public void updateUserStatus(long userId, String status) {
+	    String sql = "UPDATE users SET status=? WHERE user_id=?";
+	    try (Connection conn = DBConnection.getConnection();
+	         PreparedStatement ps = conn.prepareStatement(sql)) {
+	        ps.setString(1, status);
+	        ps.setLong(2, userId);
+	        ps.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	}
+
 }
