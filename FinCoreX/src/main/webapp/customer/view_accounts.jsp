@@ -74,38 +74,12 @@
                             </div>
                             </c:forEach>
                             
-                            <!-- Default account if no accounts found -->
+                            <!-- If no accounts -->
                             <c:if test="${empty accounts}">
                             <div class="col-md-6 mb-4">
                                 <div class="card account-card border-primary">
-                                    <div class="card-header bg-primary text-white">
-                                        <div class="d-flex justify-content-between">
-                                            <span>
-                                                <i class="fas fa-piggy-bank me-2"></i>
-                                                Savings Account
-                                            </span>
-                                            <span class="badge bg-light text-dark">Active</span>
-                                        </div>
-                                    </div>
                                     <div class="card-body">
-                                        <div class="account-balance">
-                                            <h2 class="text-primary mb-3">₹50,000.00</h2>
-                                        </div>
-                                        <p class="mb-2">
-                                            <strong>Account Number:</strong> 
-                                            <span class="text-muted">ACC1001001</span>
-                                        </p>
-                                        <p class="mb-3">
-                                            <strong>Opened:</strong> 
-                                            <span class="text-muted">Aug 15, 2025</span>
-                                        </p>
-                                        
-                                        <div class="d-grid gap-2">
-                                            <a href="${pageContext.request.contextPath}/account_statement" 
-                                               class="btn btn-outline-primary btn-sm">
-                                                <i class="fas fa-file-alt me-2"></i>View Statement
-                                            </a>
-                                        </div>
+                                        <p class="mb-0 text-muted">No accounts found.</p>
                                     </div>
                                 </div>
                             </div>
@@ -173,7 +147,9 @@
                         <div class="mb-3">
                             <label for="depositAccount" class="form-label">Select Account</label>
                             <select class="form-select" id="depositAccount" name="accountId" required>
-                                <option value="1">Savings - ACC1001001</option>
+                                <c:forEach var="a" items="${accounts}">
+                                    <option value="${a.accountId}">${a.accountType} - ${a.accountNumber}</option>
+                                </c:forEach>
                             </select>
                         </div>
                         <div class="mb-3">
@@ -211,13 +187,14 @@
                         <div class="mb-3">
                             <label for="withdrawAccount" class="form-label">Select Account</label>
                             <select class="form-select" id="withdrawAccount" name="accountId" required>
-                                <option value="1">Savings - ACC1001001 (₹50,000.00)</option>
+                                <c:forEach var="a" items="${accounts}">
+                                    <option value="${a.accountId}">${a.accountType} - ${a.accountNumber}</option>
+                                </c:forEach>
                             </select>
                         </div>
                         <div class="mb-3">
                             <label for="withdrawAmount" class="form-label">Amount (₹)</label>
-                            <input type="number" class="form-control" id="withdrawAmount" name="amount" min="1" max="50000" step="0.01" required>
-                            <div class="form-text">Available balance: ₹50,000.00</div>
+                            <input type="number" class="form-control" id="withdrawAmount" name="amount" min="1" step="0.01" required>
                         </div>
                         <div class="mb-3">
                             <label for="withdrawDescription" class="form-label">Description</label>

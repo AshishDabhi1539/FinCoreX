@@ -68,11 +68,8 @@
                                 <h5><i class="fas fa-piggy-bank me-2"></i>Savings Account</h5>
                             </div>
                             <div class="card-body">
-                                <h3 class="text-primary">₹50,000.00</h3>
-                                <p class="text-muted mb-0">Account: ACC1001001</p>
-                                <small class="text-success">
-                                    <i class="fas fa-arrow-up me-1"></i>Last transaction: +₹5,000
-                                </small>
+                                <h3 class="text-primary">₹0.00</h3>
+                                <p class="text-muted mb-0">Account:</p>
                             </div>
                         </div>
                     </div>
@@ -114,27 +111,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>Aug 19, 2025</td>
-                                        <td>Salary Credit</td>
-                                        <td><span class="badge bg-success">Credit</span></td>
-                                        <td class="text-success">+₹45,000</td>
-                                        <td>₹50,000</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Aug 18, 2025</td>
-                                        <td>ATM Withdrawal</td>
-                                        <td><span class="badge bg-danger">Debit</span></td>
-                                        <td class="text-danger">-₹2,000</td>
-                                        <td>₹5,000</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Aug 17, 2025</td>
-                                        <td>Account Opening</td>
-                                        <td><span class="badge bg-info">Credit</span></td>
-                                        <td class="text-success">+₹7,000</td>
-                                        <td>₹7,000</td>
-                                    </tr>
+                                    
                                 </tbody>
                             </table>
                         </div>
