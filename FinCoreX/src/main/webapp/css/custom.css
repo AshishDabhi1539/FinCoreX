@@ -1,0 +1,54 @@
+@charset "UTF-8";
+
+/* Login and Register Page Styling */
+.login-bg {
+    background: linear-gradient(135deg, #007bff, #28a745);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+}
+
+.login-card {
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    background: #fff;
+    animation: fadeIn 0.5s ease-in;
+}
+
+.login-card .card-body {
+    padding: 2rem;
+}
+
+.form-control {
+    border-radius: 8px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+}
+
+.btn {
+    border-radius: 8px;
+    transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+.demo-credentials {
+    border-top: 1px solid #e0e0e0;
+    padding-top: 1rem;
+    text-align: center;
+}
+
+@keyframes slideIn {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.login-card {
+    animation: slideIn 0.6s ease-out;
+}
