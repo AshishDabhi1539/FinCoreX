@@ -11,5 +11,8 @@ public class AccountService {
 	public List<Account> getUserAccounts(int userId) {
 		return accountDAO.getAccountsByUserId(userId);
 	}
-}
 
+	public Account findByAccountNumber(java.sql.Connection conn, String accountNumber) throws java.sql.SQLException {
+		return accountDAO.findByAccountNumber(conn, accountNumber);
+	}
+}

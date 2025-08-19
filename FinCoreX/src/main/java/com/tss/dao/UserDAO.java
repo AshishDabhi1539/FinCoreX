@@ -86,7 +86,9 @@ public class UserDAO {
      * Get all customers (role = 'Customer')
      */
     public List<User> getAllCustomers() {
-        String sql = "SELECT user_id, username, full_name, email, phone, role, created_at FROM users WHERE role = 'Customer' ORDER BY created_at DESC";
+        String sql = "SELECT u.user_id, u.username, u.full_name, u.email, u.phone, u.role, u.created_at, "
+                + "(SELECT COUNT(*) FROM accounts a WHERE a.user_id = u.user_id AND a.status <> 'Closed') AS account_count "
+                + "FROM users u WHERE u.role = 'Customer' ORDER BY u.created_at DESC";
         List<User> customers = new ArrayList<>();
 
         try (Connection conn = DBConnection.getConnection();
@@ -102,6 +104,7 @@ public class UserDAO {
                 user.setPhone(rs.getString("phone"));
                 user.setRole(rs.getString("role"));
                 user.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+                user.setAccountCount(rs.getInt("account_count"));
                 customers.add(user);
             }
         } catch (SQLException e) {
