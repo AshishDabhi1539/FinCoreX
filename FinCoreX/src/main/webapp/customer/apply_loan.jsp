@@ -51,8 +51,6 @@
                         </div>
                         </c:if>
 
-                        
-
                         <!-- Loan Application Form -->
                         <form action="${pageContext.request.contextPath}/apply_loan" method="post" id="loanForm">
                             <div class="row">
@@ -63,10 +61,9 @@
                                         </label>
                                         <select class="form-select" id="loanType" name="loanType" required>
                                             <option value="">Select Loan Type</option>
-                                            <option value="Personal Loan">Personal Loan</option>
-                                            <option value="Home Loan">Home Loan</option>
-                                            <option value="Car Loan">Car Loan</option>
-                                            <option value="Education Loan">Education Loan</option>
+                                            <c:forEach var="lt" items="${loanTypes}">
+                                                <option value="${lt.loanTypeName}">${lt.loanTypeName}</option>
+                                            </c:forEach>
                                         </select>
                                     </div>
                                 </div>
@@ -123,31 +120,6 @@
                                          placeholder="Briefly describe the purpose of this loan"></textarea>
                             </div>
 
-                            <!-- EMI Calculator -->
-                            <div class="card bg-light mb-3">
-                                <div class="card-body">
-                                    <h6><i class="fas fa-calculator me-2"></i>EMI Calculator</h6>
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <small class="text-muted">Principal Amount</small>
-                                            <div id="emi-principal">₹0</div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <small class="text-muted">Interest Rate</small>
-                                            <div id="emi-rate">0%</div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <small class="text-muted">Term</small>
-                                            <div id="emi-term">0 months</div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <small class="text-muted">Monthly EMI</small>
-                                            <div id="emi-amount" class="fw-bold text-primary">₹0</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
                             <div class="text-center">
                                 <button type="submit" class="btn btn-success btn-lg me-3">
                                     <i class="fas fa-paper-plane me-2"></i>Submit Application
@@ -164,41 +136,5 @@
     </div>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Interest rates for different loan types
-        const interestRates = {
-            'Personal Loan': 10.5,
-            'Home Loan': 7.2,
-            'Car Loan': 9.0,
-            'Education Loan': 8.5
-        };
-
-        // EMI Calculator
-        function calculateEMI() {
-            const principal = parseFloat(document.getElementById('amountRequested').value) || 0;
-            const loanType = document.getElementById('loanType').value;
-            const term = parseInt(document.getElementById('termMonths').value) || 0;
-            
-            const rate = interestRates[loanType] || 0;
-            const monthlyRate = rate / (12 * 100);
-            
-            document.getElementById('emi-principal').textContent = '₹' + principal.toLocaleString('en-IN');
-            document.getElementById('emi-rate').textContent = rate + '%';
-            document.getElementById('emi-term').textContent = term + ' months';
-            
-            if (principal > 0 && rate > 0 && term > 0) {
-                const emi = (principal * monthlyRate * Math.pow(1 + monthlyRate, term)) / 
-                           (Math.pow(1 + monthlyRate, term) - 1);
-                document.getElementById('emi-amount').textContent = '₹' + Math.round(emi).toLocaleString('en-IN');
-            } else {
-                document.getElementById('emi-amount').textContent = '₹0';
-            }
-        }
-
-        // Event listeners
-        document.getElementById('loanType').addEventListener('change', calculateEMI);
-        document.getElementById('amountRequested').addEventListener('input', calculateEMI);
-        document.getElementById('termMonths').addEventListener('change', calculateEMI);
-    </script>
 </body>
 </html>
