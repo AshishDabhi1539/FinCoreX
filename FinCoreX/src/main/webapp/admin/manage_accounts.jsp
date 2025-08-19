@@ -62,7 +62,7 @@
                     </table>
                 </div>
                 <div class="text-center mt-3">
-                    <a href="dashboard.jsp" class="btn btn-secondary">
+                    <a href="admin/dashboard.jsp" class="btn btn-secondary">
                         <i class="fas fa-arrow-left me-2"></i>Back
                     </a>
                 </div>

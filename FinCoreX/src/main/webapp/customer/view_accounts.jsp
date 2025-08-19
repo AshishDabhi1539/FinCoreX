@@ -124,7 +124,7 @@
                 </div>
 
                 <div class="text-center mt-3">
-                    <a href="dashboard.jsp" class="btn btn-secondary">
+                    <a href="customer/dashboard.jsp" class="btn btn-secondary">
                         <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
                     </a>
                 </div>

@@ -118,7 +118,7 @@
                                 <button type="submit" class="btn btn-success btn-lg me-3 animated pulse">
                                     <i class="fas fa-paper-plane me-2"></i>Transfer Now
                                 </button>
-                                <a href="dashboard.jsp" class="btn btn-secondary animated fadeIn">
+                                <a href="customer/dashboard.jsp" class="btn btn-secondary animated fadeIn">
                                     <i class="fas fa-times me-2"></i>Cancel
                                 </a>
                             </div>
