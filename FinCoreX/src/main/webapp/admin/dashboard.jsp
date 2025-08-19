@@ -57,104 +57,13 @@
 
             <!-- Dashboard Content -->
             <div class="col-md-9">
-                <div class="row">
-                    <!-- Stats Cards -->
-                    <div class="col-md-3 mb-4">
-                        <div class="card text-white bg-primary">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between">
-                                    <div>
-                                        <h4 class="card-title">125</h4>
-                                        <p class="card-text">Total Customers</p>
-                                    </div>
-                                    <i class="fas fa-users fa-2x"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-3 mb-4">
-                        <div class="card text-white bg-success">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between">
-                                    <div>
-                                        <h4 class="card-title">₹2.5Cr</h4>
-                                        <p class="card-text">Total Deposits</p>
-                                    </div>
-                                    <i class="fas fa-money-bill-wave fa-2x"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-3 mb-4">
-                        <div class="card text-white bg-warning">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between">
-                                    <div>
-                                        <h4 class="card-title">15</h4>
-                                        <p class="card-text">Pending Loans</p>
-                                    </div>
-                                    <i class="fas fa-clock fa-2x"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-3 mb-4">
-                        <div class="card text-white bg-info">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between">
-                                    <div>
-                                        <h4 class="card-title">89</h4>
-                                        <p class="card-text">Active Loans</p>
-                                    </div>
-                                    <i class="fas fa-handshake fa-2x"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <div class="row"></div>
 
-                <!-- Recent Activities -->
                 <div class="card">
                     <div class="card-header">
                         <h5><i class="fas fa-history me-2"></i>Recent Activities</h5>
                     </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>Time</th>
-                                        <th>Activity</th>
-                                        <th>User</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>10:30 AM</td>
-                                        <td>New loan application</td>
-                                        <td>John Doe</td>
-                                        <td><span class="badge bg-warning">Pending</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>09:15 AM</td>
-                                        <td>Account created</td>
-                                        <td>Jane Smith</td>
-                                        <td><span class="badge bg-success">Completed</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>08:45 AM</td>
-                                        <td>Money transfer</td>
-                                        <td>Mike Johnson</td>
-                                        <td><span class="badge bg-success">Completed</span></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                    <div class="card-body text-muted">No data to display.</div>
                 </div>
             </div>
         </div>

@@ -61,14 +61,7 @@
                             </p>
                         </div>
 
-                        <!-- Demo Credentials -->
-                        <div class="demo-credentials mt-4">
-                            <h6><i class="fas fa-info-circle me-2"></i>Demo Credentials:</h6>
-                            <small class="text-muted">
-                                <strong>Admin:</strong> admin / admin123<br>
-                                <strong>Customer:</strong> john_doe / john123
-                            </small>
-                        </div>
+                        
                     </div>
                 </div>
             </div>
