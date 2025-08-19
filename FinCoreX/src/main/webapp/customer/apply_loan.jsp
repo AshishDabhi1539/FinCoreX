@@ -51,50 +51,7 @@
                         </div>
                         </c:if>
 
-                        <!-- Loan Types -->
-                        <div class="row mb-4">
-                            <div class="col-12">
-                                <h6><i class="fas fa-info-circle me-2"></i>Available Loan Types</h6>
-                                <div class="row">
-                                    <div class="col-md-3 mb-2">
-                                        <div class="card border-primary">
-                                            <div class="card-body text-center">
-                                                <i class="fas fa-user fa-2x text-primary mb-2"></i>
-                                                <h6>Personal Loan</h6>
-                                                <small class="text-muted">Up to ₹5L @ 10.5%</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 mb-2">
-                                        <div class="card border-success">
-                                            <div class="card-body text-center">
-                                                <i class="fas fa-home fa-2x text-success mb-2"></i>
-                                                <h6>Home Loan</h6>
-                                                <small class="text-muted">Up to ₹50L @ 7.2%</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 mb-2">
-                                        <div class="card border-warning">
-                                            <div class="card-body text-center">
-                                                <i class="fas fa-car fa-2x text-warning mb-2"></i>
-                                                <h6>Car Loan</h6>
-                                                <small class="text-muted">Up to ₹15L @ 9.0%</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 mb-2">
-                                        <div class="card border-info">
-                                            <div class="card-body text-center">
-                                                <i class="fas fa-graduation-cap fa-2x text-info mb-2"></i>
-                                                <h6>Education Loan</h6>
-                                                <small class="text-muted">Up to ₹20L @ 8.5%</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        
 
                         <!-- Loan Application Form -->
                         <form action="${pageContext.request.contextPath}/apply_loan" method="post" id="loanForm">
@@ -150,7 +107,9 @@
                                         </label>
                                         <select class="form-select" id="accountId" name="accountId">
                                             <option value="">Select Account (Optional)</option>
-                                            <option value="1">Savings Account - ACC1001001</option>
+                                            <c:forEach var="a" items="${accounts}">
+                                                <option value="${a.accountId}">${a.accountType} - ${a.accountNumber}</option>
+                                            </c:forEach>
                                         </select>
                                     </div>
                                 </div>
