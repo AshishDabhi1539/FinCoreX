@@ -113,12 +113,72 @@
         .links a:hover {
             text-decoration: underline;
         }
+
+        /* Message Styles */
+        .message {
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.4;
+            text-align: left;
+        }
+
+        .error-message {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.5);
+            color: #fecaca;
+        }
+
+        .success-message {
+            background: rgba(34, 197, 94, 0.2);
+            border: 1px solid rgba(34, 197, 94, 0.5);
+            color: #bbf7d0;
+        }
+
+        .info-message {
+            background: rgba(59, 130, 246, 0.2);
+            border: 1px solid rgba(59, 130, 246, 0.5);
+            color: #bfdbfe;
+        }
+
+        .warning-message {
+            background: rgba(245, 158, 11, 0.2);
+            border: 1px solid rgba(245, 158, 11, 0.5);
+            color: #fed7aa;
+        }
     </style>
 </head>
 <body>
     <div class="${pageContext.request.contextPath}/login">
         <div class="login-container">
             <h2>🔒 Secure Login</h2>
+            
+            <!-- Display Messages -->
+            <c:if test="${not empty error}">
+                <div class="message error-message">
+                    ${error}
+                </div>
+            </c:if>
+            
+            <c:if test="${not empty success}">
+                <div class="message success-message">
+                    ${success}
+                </div>
+            </c:if>
+            
+            <c:if test="${not empty logoutMessage}">
+                <div class="message info-message">
+                    ${logoutMessage}
+                </div>
+            </c:if>
+            
+            <c:if test="${not empty message}">
+                <div class="message info-message">
+                    ${message}
+                </div>
+            </c:if>
+            
             <form action="${pageContext.request.contextPath}/login" method="post">
                 <input type="text" name="username" placeholder="Enter Username" required>
                 <input type="password" name="password" placeholder="Enter Password" required>
@@ -127,12 +187,6 @@
             <div class="links">
                 <p><a href="#">Forgot Password?</a> | <a href="register.jsp">New User? Register</a></p>
             </div>
-            <c:if test="${param.error == '1'}">
-    <div style="color:red; margin-bottom:10px;">
-        Invalid username or password!
-    </div>
-</c:if>
-            
         </div>
     </div>
 </body>

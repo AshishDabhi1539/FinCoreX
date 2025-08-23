@@ -10,6 +10,8 @@
 		<item key="isRegEx" value="false"/>
 		<item key="replaceBarOpen" value="true"/>
 		<list key="findhistory">
+			<item value="style"/>
+			<item value="jsp"/>
 			<item value="html"/>
 			<item value="form"/>
 			<item value="&lt;a href=&quot;${pageContext.request.contextPath}/employee/applyLeave.jsp&quot;&gt;Apply Leave&lt;/a&gt;"/>
@@ -23,8 +25,6 @@
 			<item value="income"/>
 			<item value="age"/>
 			<item value="name"/>
-			<item value="songList"/>
-			<item value="equals"/>
 		</list>
 		<list key="replacehistory">
 			<item value="scanner"/>

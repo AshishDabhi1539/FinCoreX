@@ -23,6 +23,8 @@
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
             padding: 30px 40px;
             width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
         }
         h2 {
             text-align: center;
@@ -82,20 +84,85 @@
             text-decoration: underline;
         }
         .required { color: red; }
+
+        /* Message Styles */
+        .message {
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.5;
+            text-align: left;
+        }
+
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #dc2626;
+        }
+
+        .success-message {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            color: #16a34a;
+        }
+
+        .info-message {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            color: #2563eb;
+        }
+
+        .warning-message {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            color: #d97706;
+        }
+
+        .error-list {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .error-list li {
+            margin-bottom: 5px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Bank Account Registration</h2>
+        <h2>🏦 Bank Account Registration</h2>
+        
+        <!-- Display Messages -->
+        <c:if test="${not empty error}">
+            <div class="message error-message">
+                ${error}
+            </div>
+        </c:if>
+        
+        <c:if test="${not empty success}">
+            <div class="message success-message">
+                ${success}
+            </div>
+        </c:if>
+        
+        <c:if test="${not empty message}">
+            <div class="message info-message">
+                ${message}
+            </div>
+        </c:if>
+        
         <c:if test="${not empty errors}">
-            <div style="color:red; margin-bottom: 15px;">
-                <ul>
+            <div class="message error-message">
+                <strong>❌ Registration failed. Please correct the following errors:</strong>
+                <ul class="error-list">
                     <c:forEach var="err" items="${errors}">
                         <li>${err}</li>
                     </c:forEach>
                 </ul>
             </div>
         </c:if>
+        
         <form action="${pageContext.request.contextPath}/register" method="post" class="form-grid">
 
             <!-- Full Name -->
@@ -103,39 +170,38 @@
                 <label for="fullName">Full Name <span class="required">*</span></label>
                 <input type="text" id="fullName" name="fullName"
                        placeholder="Enter your full name"
-                       required minlength="3" maxlength="50"
-                       pattern="[A-Za-z ]+">
+                       required minlength="2" maxlength="50">
             </div>
 
             <!-- Username -->
             <div class="form-group">
                 <label for="username">Username <span class="required">*</span></label>
                 <input type="text" id="username" name="username"
-                       placeholder="Choose a username"
-                       required minlength="4" maxlength="20"
-                       pattern="^[a-zA-Z0-9_]+$">
+                       placeholder="Choose a unique username"
+                       required minlength="3" maxlength="20">
             </div>
 
             <!-- Email -->
             <div class="form-group">
                 <label for="email">Email <span class="required">*</span></label>
                 <input type="email" id="email" name="email"
-                       placeholder="Enter your email"
+                       placeholder="Enter your email address"
                        required>
             </div>
 
             <!-- Phone -->
             <div class="form-group">
-                <label for="phone">Phone <span class="required">*</span></label>
+                <label for="phone">Phone Number <span class="required">*</span></label>
                 <input type="tel" id="phone" name="phone"
-                       placeholder="10-digit phone number"
+                       placeholder="10-digit mobile number"
                        pattern="[0-9]{10}" required>
             </div>
 
-            <!-- DOB -->
+            <!-- Date of Birth -->
             <div class="form-group">
                 <label for="dob">Date of Birth <span class="required">*</span></label>
-                <input type="date" id="dob" name="dob" required>
+                <input type="date" id="dob" name="dob"
+                       required>
             </div>
 
             <!-- Gender -->

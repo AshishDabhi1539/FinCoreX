@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.banking.db.DBConnection;
+import com.banking.model.NotificationPreference;
+import com.banking.model.Transaction;
 import com.banking.model.User;
 
 public class UserDao {
@@ -40,6 +42,10 @@ public class UserDao {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+			// Log the specific SQL error for debugging
+			System.err.println("SQL Error during user registration: " + e.getMessage());
+			System.err.println("SQL State: " + e.getSQLState());
+			System.err.println("Error Code: " + e.getErrorCode());
 			return false;
 		}
 	}
@@ -63,6 +69,34 @@ public class UserDao {
 		try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
 			ps.setString(1, email);
+			ResultSet rs = ps.executeQuery();
+			return rs.next();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return true;
+		}
+	}
+
+	public boolean isAadhaarExists(String aadhaar) {
+		String sql = "SELECT user_id FROM users WHERE aadhaar=?";
+		try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+			ps.setString(1, aadhaar);
+			ResultSet rs = ps.executeQuery();
+			return rs.next();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return true;
+		}
+	}
+
+	public boolean isPanExists(String pan) {
+		String sql = "SELECT user_id FROM users WHERE pan=?";
+		try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+			ps.setString(1, pan);
 			ResultSet rs = ps.executeQuery();
 			return rs.next();
 
@@ -152,5 +186,135 @@ public class UserDao {
 	        e.printStackTrace();
 	    }
 	}
+	
+	public double getBalance(long userId) {
+        String sql = "SELECT balance FROM users WHERE user_id=?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setLong(1, userId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getDouble("balance");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    // Update balance (generic, reusable)
+    public boolean updateBalance(long userId, double newBalance) {
+        String sql = "UPDATE users SET balance=? WHERE user_id=?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setDouble(1, newBalance);
+            ps.setLong(2, userId);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    // Withdraw with balance check
+    public boolean withdraw(long userId, double amount) {
+        double balance = getBalance(userId);
+        if (balance >= amount) {
+            return updateBalance(userId, balance - amount);
+        }
+        return false;
+    }
+
+    // Deposit
+    public boolean deposit(long userId, double amount) {
+        double balance = getBalance(userId);
+        return updateBalance(userId, balance + amount);
+    }
+
+    // Transfer: deduct from sender, add to receiver
+    public boolean transfer(long fromUserId, long toUserId, double amount) {
+        double senderBal = getBalance(fromUserId);
+        if (senderBal >= amount) {
+            boolean deducted = updateBalance(fromUserId, senderBal - amount);
+            if (deducted) {
+                double receiverBal = getBalance(toUserId);
+                return updateBalance(toUserId, receiverBal + amount);
+            }
+        }
+        return false;
+    }
+
+    public boolean updateNotificationPreferences(long userId, boolean email, boolean sms, boolean whatsapp) {
+        String sql = "UPDATE notification_preferences SET email = ?, sms = ?, whatsapp = ? WHERE user_id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setBoolean(1, email);
+            ps.setBoolean(2, sms);
+            ps.setBoolean(3, whatsapp);
+            ps.setLong(4, userId);
+
+            return ps.executeUpdate() > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    // ✅ Update User Profile
+    public boolean updateUserProfile(User user) {
+        String sql = "UPDATE users SET full_name = ?, email = ?, phone = ?, dob = ?, gender = ?, address = ? WHERE id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, user.getFullName());
+            ps.setString(2, user.getEmail());
+            ps.setString(3, user.getPhone());
+            ps.setDate(4, java.sql.Date.valueOf(user.getDob()));
+            ps.setString(5, user.getGender());
+            ps.setString(6, user.getAddress());
+            ps.setLong(7, user.getUserId());
+
+            return ps.executeUpdate() > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    // ✅ Get User By Id
+    public User getUserById(long userId) {
+        String sql = "SELECT * FROM users WHERE id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setLong(1, userId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                User user = new User();
+                user.setUserId(rs.getLong("id"));
+                user.setFullName(rs.getString("full_name"));
+                user.setUsername(rs.getString("username"));
+                user.setEmail(rs.getString("email"));
+                user.setPhone(rs.getString("phone"));
+                user.setDob(rs.getDate("dob").toLocalDate());
+                user.setGender(rs.getString("gender"));
+                user.setAddress(rs.getString("address"));
+                user.setAadhaar(rs.getString("aadhaar"));
+                user.setPan(rs.getString("pan"));
+                user.setAccountType(rs.getString("account_type"));
+                user.setDeposit(rs.getDouble("deposit"));
+                user.setPasswordHash(rs.getString("password"));
+                return user;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 }

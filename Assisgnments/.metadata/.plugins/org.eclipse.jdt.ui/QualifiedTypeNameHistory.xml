@@ -37,4 +37,5 @@
     <fullyQualifiedTypeName name="java.sql.Connection"/>
     <fullyQualifiedTypeName name="java.util.List"/>
     <fullyQualifiedTypeName name="com.tss.model.User"/>
+    <fullyQualifiedTypeName name="com.tss.model.annotation.Employee"/>
 </qualifiedTypeNameHistroy>

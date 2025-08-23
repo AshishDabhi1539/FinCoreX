@@ -33,11 +33,15 @@ public class UserService {
 			errors.add("Address must be at least 10 characters.");
 		if (!ValidationUtil.isValidAadhaar(user.getAadhaar()))
 			errors.add("Invalid Aadhaar.");
+		if (userDao.isAadhaarExists(user.getAadhaar()))
+			errors.add("Aadhaar number already registered.");
 		if (!ValidationUtil.isValidPAN(user.getPan()))
 			errors.add("Invalid PAN.");
+		if (userDao.isPanExists(user.getPan()))
+			errors.add("PAN number already registered.");
 		if (!ValidationUtil.isValidAccountType(user.getAccountType()))
 			errors.add("Invalid Account Type.");
-		if (!ValidationUtil.isValidDeposit(String.valueOf(user.getDeposit())))
+		if (!ValidationUtil.isValidInitialDeposit(String.valueOf(user.getDeposit())))
 			errors.add("Deposit must be at least 1000.");
 		if (!ValidationUtil.isValidPassword(user.getPasswordHash()))
 			errors.add("Password must be 8–20 chars with uppercase, lowercase, number & special char.");

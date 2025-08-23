@@ -1,80 +1,72 @@
 package com.banking.model;
 
-import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class Transaction {
-    private int id;
-    private String transactionId;
-    private int fromAccountId;
-    private int toAccountId;
-    private BigDecimal amount;
-    private String type; // NEFT, IMPS, etc.
-    private String status; // SUCCESS, FAILED, PENDING
-    private LocalDateTime createdAt;
+	private long txnId;
+	private long userId;
+	private String type; // DEPOSIT, WITHDRAW, TRANSFER_IN, TRANSFER_OUT
+	private double amount;
+	private String description;
+	private LocalDateTime txnDate;
+	private Timestamp timestamp;
 
-    public int getId() {
-        return id;
-    }
+	// Getters & Setters
+	public long getTxnId() {
+		return txnId;
+	}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	public void setTxnId(long txnId) {
+		this.txnId = txnId;
+	}
 
-    public String getTransactionId() {
-        return transactionId;
-    }
+	public long getUserId() {
+		return userId;
+	}
 
-    public void setTransactionId(String transactionId) {
-        this.transactionId = transactionId;
-    }
+	public void setUserId(long userId) {
+		this.userId = userId;
+	}
 
-    public int getFromAccountId() {
-        return fromAccountId;
-    }
+	public String getType() {
+		return type;
+	}
 
-    public void setFromAccountId(int fromAccountId) {
-        this.fromAccountId = fromAccountId;
-    }
+	public void setType(String type) {
+		this.type = type;
+	}
 
-    public int getToAccountId() {
-        return toAccountId;
-    }
+	public double getAmount() {
+		return amount;
+	}
 
-    public void setToAccountId(int toAccountId) {
-        this.toAccountId = toAccountId;
-    }
+	public void setAmount(double amount) {
+		this.amount = amount;
+	}
 
-    public BigDecimal getAmount() {
-        return amount;
-    }
+	public String getDescription() {
+		return description;
+	}
 
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    public String getType() {
-        return type;
-    }
+	public LocalDateTime getTxnDate() {
+		return txnDate;
+	}
 
-    public void setType(String type) {
-        this.type = type;
-    }
+	public void setTxnDate(LocalDateTime txnDate) {
+		this.txnDate = txnDate;
+	}
+	
+	public Timestamp getTimestamp() {
+		return timestamp;
+	}
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
+	public void setTimestamp(Timestamp timestamp) {
+		// TODO Auto-generated method stub
+		this.timestamp = timestamp;
+	}
 }
-
