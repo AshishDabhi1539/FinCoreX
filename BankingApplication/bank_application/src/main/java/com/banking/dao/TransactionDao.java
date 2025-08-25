@@ -12,7 +12,7 @@ public class TransactionDao {
 
     // Record a new transaction
     public boolean recordTransaction(Transaction txn) {
-        String sql = "INSERT INTO transactions(user_id, txn_type, amount, description, txn_date) VALUES(?,?,?,?,NOW())";
+        String sql = "INSERT INTO transactions(user_id, type, amount, description, txn_date) VALUES(?,?,?,?,NOW())";
         try (Connection conn = DBConnection.getConnection(); 
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, txn.getUserId());
@@ -60,7 +60,7 @@ public class TransactionDao {
                 Transaction txn = new Transaction();
                 txn.setTxnId(rs.getLong("txn_id"));
                 txn.setUserId(rs.getLong("user_id"));
-                txn.setType(rs.getString("txn_type"));
+                txn.setType(rs.getString("type"));
                 txn.setAmount(rs.getDouble("amount"));
                 txn.setDescription(rs.getString("description"));
                 txn.setTxnDate(rs.getTimestamp("txn_date").toLocalDateTime());
@@ -74,7 +74,7 @@ public class TransactionDao {
 
     public List<Transaction> getAllTransactions(long userId) {
         List<Transaction> transactions = new ArrayList<>();
-        String sql = "SELECT * FROM transactions WHERE user_id = ? ORDER BY timestamp DESC";
+        String sql = "SELECT * FROM transactions WHERE user_id = ? ORDER BY txn_date DESC";
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -84,12 +84,12 @@ public class TransactionDao {
 
             while (rs.next()) {
                 Transaction tx = new Transaction();
-                tx.setTxnId(rs.getLong("transaction_id"));
+                tx.setTxnId(rs.getLong("txn_id"));
                 tx.setUserId(rs.getLong("user_id"));
                 tx.setType(rs.getString("type"));
                 tx.setAmount(rs.getDouble("amount"));
                 tx.setDescription(rs.getString("description"));
-                tx.setTimestamp(rs.getTimestamp("timestamp"));
+                tx.setTxnDate(rs.getTimestamp("txn_date").toLocalDateTime());
                 transactions.add(tx);
             }
 

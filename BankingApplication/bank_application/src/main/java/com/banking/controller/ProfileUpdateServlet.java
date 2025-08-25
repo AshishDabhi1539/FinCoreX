@@ -24,7 +24,7 @@ public class ProfileUpdateServlet extends HttpServlet {
             throws ServletException, IOException {
         User sessionUser = (User) request.getSession().getAttribute("user");
         if (sessionUser == null) {
-            response.sendRedirect(request.getContextPath() + "/auth/login.jsp");
+            response.sendRedirect(request.getContextPath() + "/login");
             return;
         }
 
@@ -36,6 +36,6 @@ public class ProfileUpdateServlet extends HttpServlet {
         String message = customerService.updateProfile(sessionUser);
 
         request.getSession().setAttribute("flash", message);
-        response.sendRedirect(request.getContextPath() + "/customer/dashboard.jsp");
+        response.sendRedirect(request.getContextPath() + "/customerdashboard.jsp");
     }
 }

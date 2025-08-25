@@ -26,13 +26,13 @@ public class FullHistoryServlet extends HttpServlet {
             throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
         if (user == null) {
-            response.sendRedirect(request.getContextPath() + "/auth/login.jsp");
+            response.sendRedirect(request.getContextPath() + "/login");
             return;
         }
 
         List<Transaction> transactions = customerService.getTransactionHistory(user.getUserId());
         request.setAttribute("transactions", transactions);
 
-        request.getRequestDispatcher("/customer/statement.jsp").forward(request, response);
+        request.getRequestDispatcher("/statement.jsp").forward(request, response);
     }
 }

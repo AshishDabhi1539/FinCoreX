@@ -38,7 +38,19 @@ public class UserDao {
 			ps.setString(13, user.getRole());
 			ps.setString(14, user.getStatus());
 
-			return ps.executeUpdate() > 0;
+			int result = ps.executeUpdate();
+			if (result > 0) {
+				// Get the generated user ID
+				try (ResultSet rs = ps.getGeneratedKeys()) {
+					if (rs.next()) {
+						long userId = rs.getLong(1);
+						// Initialize notification preferences
+						initializeNotificationPreferences(userId);
+					}
+				}
+				return true;
+			}
+			return false;
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -187,14 +199,14 @@ public class UserDao {
 	    }
 	}
 	
-	public double getBalance(long userId) {
-        String sql = "SELECT balance FROM users WHERE user_id=?";
+	    public double getBalance(long userId) {
+        String sql = "SELECT deposit FROM users WHERE user_id=?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setLong(1, userId);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                return rs.getDouble("balance");
+                return rs.getDouble("deposit");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -204,7 +216,7 @@ public class UserDao {
 
     // Update balance (generic, reusable)
     public boolean updateBalance(long userId, double newBalance) {
-        String sql = "UPDATE users SET balance=? WHERE user_id=?";
+        String sql = "UPDATE users SET deposit=? WHERE user_id=?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setDouble(1, newBalance);
@@ -244,23 +256,34 @@ public class UserDao {
         return false;
     }
 
-    public boolean updateNotificationPreferences(long userId, boolean email, boolean sms, boolean whatsapp) {
-        String sql = "UPDATE notification_preferences SET email = ?, sms = ?, whatsapp = ? WHERE user_id = ?";
-        try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+    	private void initializeNotificationPreferences(long userId) {
+		String sql = "INSERT INTO notification_preferences (user_id, email, sms, whatsapp) VALUES (?, true, true, true)";
+		try (Connection conn = DBConnection.getConnection();
+			 PreparedStatement ps = conn.prepareStatement(sql)) {
+			ps.setLong(1, userId);
+			ps.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-            ps.setBoolean(1, email);
-            ps.setBoolean(2, sms);
-            ps.setBoolean(3, whatsapp);
-            ps.setLong(4, userId);
+	public boolean updateNotificationPreferences(long userId, boolean email, boolean sms, boolean whatsapp) {
+		String sql = "UPDATE notification_preferences SET email = ?, sms = ?, whatsapp = ? WHERE user_id = ?";
+		try (Connection conn = DBConnection.getConnection();
+			 PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            return ps.executeUpdate() > 0;
+			ps.setBoolean(1, email);
+			ps.setBoolean(2, sms);
+			ps.setBoolean(3, whatsapp);
+			ps.setLong(4, userId);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
+			return ps.executeUpdate() > 0;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 
     // ✅ Update User Profile
     public boolean updateUserProfile(User user) {

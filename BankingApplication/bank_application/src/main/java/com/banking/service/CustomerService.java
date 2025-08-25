@@ -202,7 +202,17 @@ public class CustomerService {
     }
 
     // 10. Update Notification Preferences
-    public boolean updateNotificationPreferences(long userId, boolean email, boolean sms, boolean whatsapp) {
-        return userDao.updateNotificationPreferences(userId, email, sms, whatsapp);
+    public boolean updateNotificationPreferences(long userId,
+                                                 boolean emailNotifications,
+                                                 boolean smsNotifications,
+                                                 boolean transactionAlerts,
+                                                 boolean balanceAlerts,
+                                                 boolean promotionalEmails) {
+        return userDao.updateNotificationPreferences(userId,
+                emailNotifications,
+                smsNotifications,
+                transactionAlerts,
+                balanceAlerts,
+                promotionalEmails);
     }
 }

@@ -79,6 +79,21 @@ CREATE TABLE customers (
     INDEX idx_user_id (user_id)
 );
 
+-- Notification preferences table
+CREATE TABLE notification_preferences (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    email BOOLEAN DEFAULT FALSE,
+    sms BOOLEAN DEFAULT FALSE,
+    whatsapp BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    UNIQUE KEY unique_user_preferences (user_id),
+    INDEX idx_user_id (user_id)
+);
+
 -- Branches table
 CREATE TABLE branches (
     branch_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -148,22 +163,6 @@ CREATE TABLE transfers (
     INDEX idx_from_user (from_user_id),
     INDEX idx_to_user (to_user_id),
     INDEX idx_status (status)
-);
-
--- Notification preferences table
-CREATE TABLE notification_preferences (
-    preference_id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    user_id BIGINT NOT NULL,
-    email_notifications BOOLEAN DEFAULT TRUE,
-    sms_notifications BOOLEAN DEFAULT TRUE,
-    transaction_alerts BOOLEAN DEFAULT TRUE,
-    balance_alerts BOOLEAN DEFAULT TRUE,
-    promotional_emails BOOLEAN DEFAULT FALSE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    
-    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
-    UNIQUE KEY unique_user_preferences (user_id)
 );
 
 -- Audit logs table

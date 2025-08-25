@@ -24,19 +24,26 @@ public class NotificationServlet extends HttpServlet {
             throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
         if (user == null) {
-            response.sendRedirect(request.getContextPath() + "/auth/login.jsp");
+            response.sendRedirect(request.getContextPath() + "/login");
             return;
         }
 
-        boolean email = request.getParameter("email") != null;
-        boolean sms = request.getParameter("sms") != null;
-        boolean whatsapp = request.getParameter("whatsapp") != null;
+        boolean emailNotifications = request.getParameter("email_notifications") != null;
+        boolean smsNotifications = request.getParameter("sms_notifications") != null;
+        boolean transactionAlerts = request.getParameter("transaction_alerts") != null;
+        boolean balanceAlerts = request.getParameter("balance_alerts") != null;
+        boolean promotionalEmails = request.getParameter("promotional_emails") != null;
 
         boolean success = customerService.updateNotificationPreferences(
-                user.getUserId(), email, sms, whatsapp);
+                user.getUserId(),
+                emailNotifications,
+                smsNotifications,
+                transactionAlerts,
+                balanceAlerts,
+                promotionalEmails);
 
         request.getSession().setAttribute("flash", 
                 success ? "Preferences updated!" : "Update failed.");
-        response.sendRedirect(request.getContextPath() + "/customer/dashboard.jsp");
+        response.sendRedirect(request.getContextPath() + "/customerdashboard.jsp");
     }
 }

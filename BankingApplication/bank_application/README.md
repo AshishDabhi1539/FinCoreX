@@ -1,177 +1,261 @@
-# 🏦 Banking Application
+# Banking Application - Enterprise Edition
 
-A comprehensive web-based banking application built with Java Servlets, JSP, and MySQL following the MVC architecture pattern.
+A comprehensive Java web-based banking management system built with Servlet/JSP technology, following enterprise-level patterns and best practices.
 
-## 📋 Table of Contents
+## 🏦 Features
 
-- [Features](#features)
-- [Technology Stack](#technology-stack)
-- [Architecture](#architecture)
-- [Installation](#installation)
-- [Database Setup](#database-setup)
-- [Configuration](#configuration)
-- [Usage](#usage)
-- [API Documentation](#api-documentation)
-- [Security Features](#security-features)
-- [Contributing](#contributing)
+### Core Banking Features
+- **User Management**: Registration, authentication, and profile management
+- **Account Management**: Create, view, and manage bank accounts
+- **Transaction Processing**: Deposit, withdraw, and transfer operations
+- **Loan Management**: Apply for and manage loans with EMI calculations
+- **Admin Dashboard**: Comprehensive admin panel for bank operations
+- **Customer Dashboard**: User-friendly customer interface
 
-## ✨ Features
+### Security Features
+- **Password Hashing**: Secure password storage with salt
+- **Session Management**: Robust session handling and timeout
+- **Input Validation**: Comprehensive input sanitization and validation
+- **Role-based Access Control**: Admin and customer role separation
+- **XSS Protection**: Cross-site scripting prevention
 
-### Customer Features
-- 🔐 Secure user registration and authentication
-- 💳 Account management and balance checking
-- 💰 Deposit and withdrawal operations
-- 🔄 Fund transfers between accounts
-- 📊 Transaction history and mini statements
-- 👤 Profile management and updates
-- 🔔 Notification preferences
-- 📱 Responsive design for mobile devices
-
-### Admin Features
-- 👥 Complete customer management
-- ✅ User approval and rejection system
-- 📈 Comprehensive reports and analytics
-- 💳 Transaction monitoring
-- 🔒 Account freeze/unfreeze functionality
-- 📊 Financial statistics and charts
-- 📋 Audit logging and tracking
+### Enterprise Features
+- **Exception Handling**: Global exception handling with custom error pages
+- **Logging System**: Comprehensive request/response logging
+- **Configuration Management**: Centralized application configuration
+- **Database Connection Pooling**: Efficient database connections
+- **Audit Trail**: Transaction and user activity tracking
 
 ## 🛠️ Technology Stack
 
 - **Backend**: Java Servlets, JSP
-- **Database**: MySQL 8.0+
-- **Server**: Apache Tomcat 9.0/10.0
-- **Frontend**: Bootstrap 5, Chart.js, Font Awesome
-- **Build Tool**: Eclipse IDE
-- **Java Version**: Java 21
-- **Dependencies**: JSTL, MySQL Connector/J
+- **Database**: MySQL
+- **Server**: Apache Tomcat 9.0
+- **Frontend**: Bootstrap 5, Chart.js, JSTL
+- **Build Tool**: Maven
+- **Security**: Custom authentication and authorization
 
-## 🏗️ Architecture
-
-The application follows the **Model-View-Controller (MVC)** pattern:
+## 📁 Project Structure
 
 ```
-📁 bank_application/
-├── 📁 src/main/
-│   ├── 📁 java/com/banking/
-│   │   ├── 📁 controller/     # Servlets (Controllers)
-│   │   ├── 📁 service/        # Business Logic
-│   │   ├── 📁 dao/           # Data Access Objects
-│   │   ├── 📁 model/         # Entity Classes
-│   │   ├── 📁 util/          # Utility Classes
-│   │   ├── 📁 db/            # Database Connection
-│   │   └── 📁 exception/     # Exception Handling
-│   └── 📁 webapp/
-│       ├── 📁 admin/         # Admin Interface
-│       ├── 📁 customer/      # Customer Interface
-│       ├── 📁 auth/          # Authentication Pages
-│       ├── 📁 error/         # Error Pages
-│       └── 📁 WEB-INF/       # Configuration & Libraries
+bank_application/
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   └── com/banking/
+│   │   │       ├── controller/     # Servlet controllers
+│   │   │       ├── dao/           # Data Access Objects
+│   │   │       ├── model/         # Entity classes
+│   │   │       ├── service/       # Business logic
+│   │   │       ├── util/          # Utility classes
+│   │   │       ├── config/        # Configuration
+│   │   │       ├── exception/     # Custom exceptions
+│   │   │       └── filter/        # Servlet filters
+│   │   ├── resources/
+│   │   │   └── application.properties
+│   │   └── webapp/
+│   │       ├── WEB-INF/
+│   │       │   └── web.xml
+│   │       ├── admin/            # Admin JSP pages
+│   │       ├── customer/         # Customer JSP pages
+│   │       ├── auth/             # Authentication pages
+│   │       ├── css/              # Stylesheets
+│   │       ├── js/               # JavaScript files
+│   │       └── images/           # Static images
+│   └── test/                     # Test files
+├── database/                     # Database scripts
+├── docs/                         # Documentation
+└── README.md
 ```
 
-## 🚀 Installation
+## 🚀 Quick Start
 
 ### Prerequisites
-- Java 21 or higher
-- Apache Tomcat 9.0/10.0
+- Java JDK 8 or higher
+- Apache Tomcat 9.0
 - MySQL 8.0 or higher
-- Eclipse IDE (recommended)
+- Maven 3.6 or higher
 
-### Steps
+### Installation Steps
 
-1. **Clone the repository**
+1. **Clone the Repository**
    ```bash
    git clone <repository-url>
-   cd BankingApplication
+   cd bank_application
    ```
 
-2. **Import into Eclipse**
-   - Open Eclipse IDE
-   - File → Import → Existing Projects into Workspace
-   - Select the `bank_application` folder
-   - Click Finish
+2. **Database Setup**
+   ```bash
+   # Create database
+   mysql -u root -p
+   CREATE DATABASE banking_app;
+   USE banking_app;
+   
+   # Run database scripts
+   source database/schema.sql
+   source database/data.sql
+   ```
 
-3. **Configure Tomcat Server**
-   - Window → Preferences → Server → Runtime Environments
-   - Add Apache Tomcat 9.0 or 10.0
-   - Configure the server path
+3. **Configure Database Connection**
+   - Edit `src/main/java/com/banking/db/DBConnection.java`
+   - Update database URL, username, and password
 
-4. **Set up Database**
-   - Follow the [Database Setup](#database-setup) section
+4. **Build the Project**
+   ```bash
+   mvn clean package
+   ```
 
-5. **Configure Database Connection**
-   - Update `DBConnection.java` with your database credentials
-   - Ensure MySQL server is running
-
-6. **Deploy and Run**
-   - Right-click on the project → Run As → Run on Server
-   - Select your configured Tomcat server
+5. **Deploy to Tomcat**
+   - Copy the generated WAR file to Tomcat's `webapps` directory
+   - Start Tomcat server
    - Access the application at `http://localhost:8080/bank_application`
 
-## 🗄️ Database Setup
+## 🔧 Configuration
 
-1. **Create Database**
-   ```sql
-   CREATE DATABASE banking;
-   USE banking;
-   ```
+### Application Properties
+The application uses a centralized configuration system. Key settings can be modified in `application.properties`:
 
-2. **Run Schema Script**
-   ```bash
-   mysql -u root -p banking < database_schema.sql
-   ```
+```properties
+# Database Configuration
+app.db.url=jdbc:mysql://localhost:3306/banking_app
+app.db.username=root
+app.db.password=password
 
-3. **Verify Tables**
-   ```sql
-   SHOW TABLES;
-   ```
+# Security Configuration
+app.max.login.attempts=3
+app.session.timeout=30
 
-4. **Check Default Admin User**
-   ```sql
-   SELECT * FROM users WHERE role = 'ADMIN';
-   ```
-
-## ⚙️ Configuration
-
-### Database Configuration
-Update `src/main/java/com/banking/db/DBConnection.java`:
-
-```java
-private static final String URL = "jdbc:mysql://localhost:3306/banking";
-private static final String USER = "your_username";
-private static final String PASSWORD = "your_password";
+# Transaction Limits
+app.transaction.limit.deposit=100000
+app.transaction.limit.withdraw=50000
+app.transaction.limit.transfer=100000
 ```
 
-### Web Application Configuration
-The application uses `web.xml` for configuration:
-- Session timeout: 30 minutes
-- Character encoding: UTF-8
-- Error pages: 404, 500
-- Security constraints for admin and customer areas
+### Environment Variables
+- `DB_URL`: Database connection URL
+- `DB_USERNAME`: Database username
+- `DB_PASSWORD`: Database password
+- `APP_ENV`: Application environment (dev/prod)
 
-## 📖 Usage
+## 👥 User Roles
 
-### Default Admin Credentials
-- **Username**: admin
-- **Password**: admin123
-- **Email**: admin@mybank.com
+### Admin
+- Manage all customer accounts
+- Approve/reject loan applications
+- View transaction reports
+- System configuration
+- User management
 
-### Customer Registration Flow
-1. Visit the application homepage
-2. Click "Register" to create a new account
-3. Fill in all required information
-4. Submit for admin approval
-5. Admin approves/rejects the registration
-6. Customer can login once approved
+### Customer
+- View account balance and transactions
+- Perform banking operations
+- Apply for loans
+- Update profile information
+- View notifications
 
-### Admin Operations
-1. Login with admin credentials
-2. Access pending approvals
-3. Approve or reject customer registrations
-4. Monitor transactions and generate reports
-5. Manage customer accounts
+## 🔐 Security Features
 
-## 🔌 API Documentation
+### Authentication
+- Secure password hashing with salt
+- Session-based authentication
+- Automatic session timeout
+- Login attempt limiting
+
+### Authorization
+- Role-based access control
+- URL-based security filtering
+- Admin-only resource protection
+
+### Data Protection
+- Input sanitization
+- SQL injection prevention
+- XSS protection
+- Sensitive data masking
+
+## 📊 Database Schema
+
+### Core Tables
+- `users`: User information and authentication
+- `accounts`: Bank account details
+- `transactions`: Transaction history
+- `loans`: Loan applications and details
+- `notifications`: System notifications
+
+### Key Relationships
+- Users can have multiple accounts
+- Transactions are linked to accounts
+- Loans are associated with users
+- Notifications are user-specific
+
+## 🧪 Testing
+
+### Unit Tests
+```bash
+mvn test
+```
+
+### Integration Tests
+```bash
+mvn verify
+```
+
+### Manual Testing
+1. **Admin Login**: Use default admin credentials
+2. **Customer Registration**: Create new customer accounts
+3. **Transaction Testing**: Perform various banking operations
+4. **Loan Application**: Test loan approval workflow
+
+## 📈 Monitoring and Logging
+
+### Application Logs
+- Request/response logging
+- Error tracking
+- Performance monitoring
+- Security event logging
+
+### Database Monitoring
+- Connection pool statistics
+- Query performance
+- Transaction monitoring
+
+## 🔄 Deployment
+
+### Development
+```bash
+mvn tomcat7:run
+```
+
+### Production
+1. Build the application
+2. Configure production database
+3. Set environment variables
+4. Deploy to production Tomcat server
+5. Configure SSL certificates
+6. Set up monitoring and logging
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+1. **Database Connection Error**
+   - Verify database credentials
+   - Check database server status
+   - Ensure database exists
+
+2. **Session Issues**
+   - Clear browser cookies
+   - Check session timeout settings
+   - Verify session configuration
+
+3. **Transaction Failures**
+   - Check account balance
+   - Verify transaction limits
+   - Review error logs
+
+### Debug Mode
+Enable debug mode by setting `app.debug=true` in `application.properties`
+
+## 📝 API Documentation
 
 ### Authentication Endpoints
 - `POST /login` - User login
@@ -179,135 +263,52 @@ The application uses `web.xml` for configuration:
 - `GET /logout` - User logout
 
 ### Customer Endpoints
+- `GET /customer/dashboard` - Customer dashboard
 - `POST /customer/deposit` - Deposit money
 - `POST /customer/withdraw` - Withdraw money
-- `POST /customer/transfer` - Transfer funds
-- `GET /customer/miniStatement` - Get mini statement
-- `GET /customer/fullHistory` - Get transaction history
+- `POST /customer/transfer` - Transfer money
 
 ### Admin Endpoints
 - `GET /admin/dashboard` - Admin dashboard
-- `GET /admin/customers` - View all customers
-- `GET /admin/pending` - View pending approvals
-- `POST /admin/approve` - Approve user
-- `POST /admin/reject` - Reject user
-- `GET /admin/transactions` - View all transactions
-- `GET /admin/reports` - Generate reports
-
-## 🔒 Security Features
-
-### Input Validation
-- Comprehensive validation for all user inputs
-- SQL injection prevention
-- XSS protection
-- CSRF protection
-
-### Authentication & Authorization
-- Session-based authentication
-- Role-based access control (ADMIN/CUSTOMER)
-- Account status management
-- Secure password handling
-
-### Data Protection
-- Encrypted database connections
-- Audit logging for sensitive operations
-- Input sanitization
-- Error handling without information disclosure
-
-## 📊 Database Schema
-
-### Core Tables
-- **users** - User accounts and personal information
-- **transactions** - Transaction history
-- **accounts** - Bank account details
-- **customers** - Customer-specific data
-- **loans** - Loan information
-- **branches** - Branch details
-- **beneficiaries** - Beneficiary management
-- **audit_logs** - Audit trail
-- **notification_preferences** - User notification settings
-
-### Key Relationships
-- Users can have multiple transactions
-- Users can have multiple accounts
-- Transactions are linked to users
-- Loans are linked to users
-- Audit logs track all sensitive operations
-
-## 🧪 Testing
-
-### Manual Testing
-1. **Registration Testing**
-   - Test with valid data
-   - Test with invalid data
-   - Test duplicate username/email
-
-2. **Authentication Testing**
-   - Test login with valid credentials
-   - Test login with invalid credentials
-   - Test logout functionality
-
-3. **Transaction Testing**
-   - Test deposit operations
-   - Test withdrawal operations
-   - Test transfer operations
-   - Test insufficient funds scenarios
-
-4. **Admin Testing**
-   - Test user approval/rejection
-   - Test customer management
-   - Test report generation
-
-## 🐛 Troubleshooting
-
-### Common Issues
-
-1. **Database Connection Error**
-   - Verify MySQL server is running
-   - Check database credentials in `DBConnection.java`
-   - Ensure database and tables exist
-
-2. **Tomcat Deployment Error**
-   - Check Java version compatibility
-   - Verify Tomcat configuration
-   - Check for port conflicts
-
-3. **JSP Compilation Error**
-   - Ensure JSTL library is in WEB-INF/lib
-   - Check JSP syntax
-   - Verify taglib declarations
-
-4. **Session Issues**
-   - Check session timeout configuration
-   - Verify session management in servlets
-   - Check browser cookie settings
+- `POST /admin/approve-user` - Approve user
+- `POST /admin/reject-user` - Reject user
+- `GET /admin/reports` - View reports
 
 ## 🤝 Contributing
 
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
-4. Add tests if applicable
+4. Add tests for new features
 5. Submit a pull request
 
-## 📝 License
+## 📄 License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## 📞 Support
+## 🆘 Support
 
 For support and questions:
 - Create an issue in the repository
 - Contact the development team
-- Check the troubleshooting section
+- Check the documentation
 
 ## 🔄 Version History
 
-- **v1.0.0** - Initial release with basic banking features
-- **v1.1.0** - Added admin dashboard and reporting
-- **v1.2.0** - Enhanced security and validation
-- **v1.3.0** - Added comprehensive error handling
+### v1.0.0 (Current)
+- Initial release
+- Core banking features
+- Admin and customer interfaces
+- Security implementation
+- Database integration
+
+### Planned Features
+- Mobile app integration
+- API endpoints
+- Advanced reporting
+- Multi-currency support
+- Real-time notifications
 
 ---
 
-**Note**: This is a demonstration application. For production use, implement additional security measures, proper password hashing, and comprehensive testing.
+**Note**: This is a demonstration application. For production use, additional security measures, compliance checks, and thorough testing are required.
